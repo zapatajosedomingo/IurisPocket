@@ -403,6 +403,103 @@
       letter-spacing: 0.25em;
       color: rgba(240,237,230,0.2);
     }
+
+    /* ── VISOR DE DOCUMENTO ── */
+    #viewer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: #fff;
+      flex-direction: column;
+    }
+    #viewer-overlay.active { display: flex; }
+
+    #viewer-topbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 14px;
+      height: 52px;
+      background: var(--bg);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      flex-shrink: 0;
+      z-index: 10;
+    }
+
+    #btn-back {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid rgba(201,168,76,0.25);
+      color: var(--gold);
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      padding: 7px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    #btn-back:active { background: rgba(201,168,76,0.2); }
+    #btn-back .arrow { font-size: 1rem; line-height: 1; }
+
+    #viewer-title {
+      flex: 1;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      color: var(--white);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    #viewer-logo {
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    #doc-iframe {
+      flex: 1;
+      border: none;
+      width: 100%;
+      background: #fff;
+    }
+
+    /* ── LOADER ── */
+    #loader {
+      display: none;
+      position: absolute;
+      inset: 52px 0 0 0;
+      background: var(--bg);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      z-index: 5;
+    }
+    #loader.visible { display: flex; }
+    .loader-ring {
+      width: 44px; height: 44px;
+      border: 3px solid rgba(201,168,76,0.15);
+      border-top-color: var(--gold);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    .loader-txt {
+      font-family: 'Cinzel', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
 <body>
@@ -651,11 +748,90 @@
   <footer>IURISPOCKET · KOSMOS FIDES GROUP · PANAMÁ 🇵🇦</footer>
 </div>
 
+<!-- VISOR DE DOCUMENTOS CON BOTÓN DE REGRESO -->
+<div id="viewer-overlay">
+  <div id="viewer-topbar">
+    <button id="btn-back" onclick="cerrarVisor()">
+      <span class="arrow">◀</span> Inicio
+    </button>
+    <div id="viewer-title"></div>
+    <div id="viewer-logo">⚖ IURISPOCKET</div>
+  </div>
+  <div id="loader" class="visible">
+    <div class="loader-ring"></div>
+    <div class="loader-txt">Cargando documento</div>
+  </div>
+  <iframe id="doc-iframe" src="about:blank" title="Documento jurídico"
+    onload="document.getElementById('loader').classList.remove('visible')">
+  </iframe>
+</div>
+
 <script>
+  /* ── Grupos colapsables ── */
   function toggle(id) {
     const el = document.getElementById(id);
     el.classList.toggle('open');
   }
+
+  /* ── Visor de documentos ── */
+  function abrirDoc(url, titulo) {
+    const overlay = document.getElementById('viewer-overlay');
+    const iframe  = document.getElementById('doc-iframe');
+    const title   = document.getElementById('viewer-title');
+    const loader  = document.getElementById('loader');
+
+    title.textContent = titulo;
+    loader.classList.add('visible');
+    iframe.src = url;
+    overlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    // Historial para el botón físico de Android
+    history.pushState({ doc: url, titulo }, '', '#doc');
+    document.title = titulo + ' · IurisPocket';
+  }
+
+  function cerrarVisor() {
+    const overlay = document.getElementById('viewer-overlay');
+    const iframe  = document.getElementById('doc-iframe');
+
+    overlay.classList.remove('active');
+    iframe.src = 'about:blank';
+    document.body.style.overflow = '';
+    document.title = 'IurisPocket · Biblioteca Jurídica · Panamá';
+
+    if (location.hash === '#doc') history.back();
+  }
+
+  // Botón físico de retroceso de Android
+  window.addEventListener('popstate', (e) => {
+    const overlay = document.getElementById('viewer-overlay');
+    if (overlay.classList.contains('active')) {
+      const iframe = document.getElementById('doc-iframe');
+      overlay.classList.remove('active');
+      iframe.src = 'about:blank';
+      document.body.style.overflow = '';
+      document.title = 'IurisPocket · Biblioteca Jurídica · Panamá';
+    }
+  });
+
+  /* ── Interceptar TODOS los enlaces internos ── */
+  document.addEventListener('click', (e) => {
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    const href = a.getAttribute('href');
+    // Solo interceptar enlaces a archivos HTML locales
+    if (href && href.endsWith('.html') && !href.startsWith('http')) {
+      e.preventDefault();
+      // Obtener el nombre legible del documento
+      const nombre = a.querySelector('.group-name, .law-item-name, .hero-badge')?.textContent?.trim()
+                  || a.querySelector('h2')?.textContent?.trim()
+                  || href.replace('.html','').replace(/_/g,' ');
+      abrirDoc(href, nombre);
+    }
+  });
+
+  /* ── Service Worker ── */
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/service-worker.js');
   }
