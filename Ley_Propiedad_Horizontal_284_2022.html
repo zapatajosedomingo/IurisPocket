@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ley de Propiedad Horizontal — Ley N° 284 de 2022</title>
+  <meta name="description" content="Ley de Propiedad Horizontal de Panamá. Ley N° 284 del 14 de febrero de 2022. 125 artículos.">
+  <style>
+    :root {
+      --primary:      #1A3A4C;
+      --secondary:    #1E4D6B;
+      --accent:       #C87941;
+      --teal:         #0D6B6B;
+      --bg:           #F2F5F8;
+      --text:         #0D1C26;
+      --card-bg:      #FFFFFF;
+      --sidebar-w:    300px;
+      --topbar-h:     56px;
+      --bottomnav-h:  60px;
+      --radius:       8px;
+      --shadow:       0 2px 12px rgba(0,0,0,0.09);
+      --shadow-lg:    0 8px 32px rgba(0,0,0,0.16);
+      --transition:   0.22s ease;
+    }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; font-size:16px; }
+    body { font-family:'Segoe UI',Arial,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; overflow-x:hidden; }
+    a { color:var(--secondary); text-decoration:none; }
+    a:hover { text-decoration:underline; }
+    button { cursor:pointer; font-family:inherit; }
+    .app-shell { display:flex; flex-direction:column; min-height:100vh; }
+
+    /* TOPBAR */
+    .topbar { position:fixed; top:0; left:0; right:0; height:var(--topbar-h); background:var(--primary); color:#fff; display:flex; align-items:center; gap:8px; padding:0 12px; z-index:200; box-shadow:0 2px 10px rgba(0,0,0,0.30); }
+    .hamburger { background:none; border:none; color:#fff; font-size:1.4rem; width:44px; height:44px; display:flex; align-items:center; justify-content:center; border-radius:6px; flex-shrink:0; transition:background var(--transition); }
+    .hamburger:hover { background:rgba(255,255,255,0.13); }
+    .breadcrumb { flex:1; display:flex; align-items:center; gap:4px; font-size:0.82rem; overflow:hidden; white-space:nowrap; }
+    .breadcrumb a { color:rgba(255,255,255,0.82); transition:color var(--transition); }
+    .breadcrumb a:hover { color:var(--accent); text-decoration:none; }
+    .breadcrumb .sep { color:rgba(255,255,255,0.38); padding:0 2px; }
+    .topbar-search { display:flex; align-items:center; background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25); border-radius:6px; overflow:hidden; }
+    .topbar-search input { background:none; border:none; color:#fff; padding:6px 10px; font-size:0.85rem; width:160px; outline:none; }
+    .topbar-search input::placeholder { color:rgba(255,255,255,0.45); }
+    .topbar-search button { background:none; border:none; color:rgba(255,255,255,0.62); padding:6px 8px; font-size:0.85rem; }
+    .topbar-search button:hover { color:#fff; }
+    .goto-art { display:flex; align-items:center; gap:4px; }
+    .goto-art input { width:90px; padding:6px 8px; border:1px solid rgba(255,255,255,0.25); border-radius:6px; background:rgba(255,255,255,0.12); color:#fff; font-size:0.85rem; outline:none; }
+    .goto-art input::placeholder { color:rgba(255,255,255,0.45); }
+    .goto-art button { padding:6px 12px; background:var(--accent); border:none; border-radius:6px; color:#fff; font-weight:700; font-size:0.85rem; }
+    .goto-art button:hover { background:#d98a52; }
+
+    /* SEARCH BAR */
+    .search-results-bar { display:none; position:fixed; top:var(--topbar-h); left:0; right:0; background:#EBF2F7; border-bottom:2px solid var(--accent); padding:8px 16px; z-index:195; align-items:center; gap:10px; font-size:0.85rem; }
+    .search-results-bar.visible { display:flex; }
+    .search-results-bar span { flex:1; font-weight:600; color:var(--primary); }
+    .search-results-bar button { padding:5px 12px; border:1px solid var(--secondary); border-radius:5px; background:#fff; font-size:0.82rem; }
+    .search-results-bar button:hover { background:var(--secondary); color:#fff; }
+
+    /* OVERLAY + SIDEBAR */
+    .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.50); z-index:290; }
+    .overlay.active { display:block; }
+    .app-sidebar { position:fixed; top:var(--topbar-h); left:0; bottom:0; width:var(--sidebar-w); background:var(--card-bg); border-right:1px solid #D0DCE5; overflow-y:auto; z-index:300; transform:translateX(-100%); transition:transform var(--transition); display:flex; flex-direction:column; }
+    .app-sidebar.open { transform:translateX(0); }
+    .sidebar-header { padding:16px; background:var(--primary); color:#fff; font-family:Georgia,serif; font-size:0.78rem; font-weight:700; letter-spacing:0.06em; text-transform:uppercase; flex-shrink:0; }
+    .sidebar-nav { flex:1; padding:8px 0; }
+    .sidebar-nav-item { display:flex; align-items:center; gap:10px; padding:8px 16px; font-size:0.86rem; color:var(--text); border:none; background:none; width:100%; text-align:left; transition:background var(--transition); cursor:pointer; }
+    .sidebar-nav-item:hover { background:#EBF2F7; }
+    .sidebar-nav-item.sidebar-sub { padding-left:28px; font-size:0.80rem; color:#4A6580; }
+    .sidebar-nav-item .item-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .sidebar-divider { height:1px; background:#D0DCE5; margin:6px 0; }
+    .sidebar-section-label { padding:6px 16px 3px; font-size:0.67rem; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#7A9BB0; }
+
+    /* MAIN */
+    .main-content { margin-top:var(--topbar-h); min-height:calc(100vh - var(--topbar-h)); transition:margin-left var(--transition); padding-bottom:var(--bottomnav-h); }
+    .page { display:block; visibility:hidden; height:0; overflow:hidden; pointer-events:none; }
+    .page.active { display:block; visibility:visible; height:auto; overflow:visible; pointer-events:auto; }
+
+    /* PORTADA */
+    .portada-wrap { max-width:860px; margin:0 auto; padding:56px 24px 40px; }
+    .portada-banner { background:linear-gradient(135deg,#1A3A4C 0%,#0D2535 100%); border-radius:12px; padding:40px 36px; color:#fff; margin-bottom:32px; position:relative; overflow:hidden; }
+    .portada-banner::after { content:''; position:absolute; right:-40px; top:-40px; width:200px; height:200px; border-radius:50%; background:rgba(200,121,65,0.15); }
+    .portada-icon { font-size:3rem; display:block; margin-bottom:16px; }
+    .portada-title { font-family:Georgia,serif; font-size:clamp(1.4rem,3.5vw,2.2rem); line-height:1.25; margin-bottom:8px; }
+    .portada-subtitle { font-size:0.95rem; color:rgba(255,255,255,0.70); margin-bottom:4px; }
+    .portada-date { font-size:0.85rem; color:var(--accent); font-weight:600; }
+    .portada-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; margin-bottom:28px; }
+    .portada-card { background:var(--card-bg); border:1px solid #D0DCE5; border-radius:var(--radius); padding:18px 20px; display:flex; flex-direction:column; gap:6px; box-shadow:var(--shadow); transition:transform var(--transition),box-shadow var(--transition); cursor:pointer; border-top:3px solid var(--card-accent,var(--primary)); }
+    .portada-card:hover { transform:translateY(-2px); box-shadow:var(--shadow-lg); }
+    .portada-card .card-icon { font-size:1.4rem; }
+    .portada-card .card-label { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--card-accent,var(--primary)); }
+    .portada-card .card-title { font-family:Georgia,serif; font-size:0.95rem; font-weight:700; color:var(--text); line-height:1.3; }
+    .portada-card .card-range { font-size:0.75rem; color:#7A9BB0; }
+    .portada-stats { display:flex; gap:24px; padding:20px 24px; background:var(--card-bg); border-radius:var(--radius); box-shadow:var(--shadow); border:1px solid #D0DCE5; }
+    .portada-stat { flex:1; text-align:center; }
+    .portada-stat strong { display:block; font-size:1.5rem; font-family:Georgia,serif; color:var(--primary); }
+    .portada-stat span { font-size:0.75rem; color:#7A9BB0; text-transform:uppercase; letter-spacing:0.06em; }
+
+    /* ÍNDICE */
+    .indice-header { background:linear-gradient(135deg,#1A3A4C 0%,#0D2535 100%); color:#fff; padding:32px 24px; text-align:center; }
+    .indice-header h1 { font-family:Georgia,serif; font-size:clamp(1.2rem,3vw,1.8rem); margin-bottom:8px; }
+    .indice-header p { font-size:0.9rem; opacity:0.68; }
+    .indice-lista { max-width:900px; margin:0 auto; padding:24px 16px 40px; display:flex; flex-direction:column; gap:10px; }
+    .indice-titulo-card { background:var(--card-bg); border-radius:var(--radius); box-shadow:var(--shadow); border-left:5px solid var(--tit-color,var(--secondary)); overflow:hidden; }
+    .indice-titulo-head { display:flex; align-items:center; gap:12px; width:100%; padding:14px 16px; background:none; border:none; text-align:left; cursor:pointer; transition:background var(--transition); min-height:44px; }
+    .indice-titulo-head:hover { background:color-mix(in srgb,var(--tit-color,var(--secondary)) 5%,white); }
+    .tit-badge { min-width:36px; height:36px; border-radius:6px; background:var(--tit-color,var(--secondary)); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.72rem; flex-shrink:0; padding:0 6px; }
+    .tit-info { flex:1; }
+    .tit-info h3 { font-family:Georgia,serif; font-size:0.93rem; color:var(--text); margin-bottom:2px; }
+    .tit-info span { font-size:0.76rem; color:#7A9BB0; }
+    .tit-arrow { font-size:0.8rem; color:#B0C5D5; transition:transform var(--transition); flex-shrink:0; }
+    .indice-titulo-head.open .tit-arrow { transform:rotate(90deg); }
+    .indice-titulo-body { display:none; border-top:1px solid #EAF0F5; padding:4px 0; background:#F8FAFB; }
+    .indice-titulo-body.open { display:block; }
+    .indice-cap-row { display:flex; align-items:center; justify-content:space-between; padding:8px 16px 8px 52px; border-bottom:1px solid #EAF0F5; gap:12px; min-height:34px; }
+    .indice-cap-row:last-child { border-bottom:none; }
+    .indice-cap-row a { font-size:0.84rem; color:var(--secondary); flex:1; }
+    .indice-cap-row a:hover { text-decoration:underline; }
+    .c-range { font-size:0.75rem; color:#B0C5D5; white-space:nowrap; }
+
+    /* CONTENIDO */
+    .contenido-wrap { max-width:960px; margin:0 auto; padding:24px 16px 40px; }
+    .titulo-bloque { margin-bottom:22px; border-radius:var(--radius); overflow:hidden; }
+    .titulo-header { padding:12px 18px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; color:#fff; }
+    .titulo-nombre { font-family:Georgia,serif; font-size:0.95rem; flex:1; font-weight:700; }
+    .titulo-arts { font-size:0.78rem; opacity:0.68; white-space:nowrap; }
+    .capitulo-section { margin-bottom:10px; }
+    .cap-header { padding:8px 14px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; border-radius:6px; margin-bottom:6px; background:#EBF2F7; }
+    .cap-nombre { font-size:0.88rem; font-weight:600; flex:1; color:var(--primary); }
+    .cap-arts { font-size:0.76rem; color:#7A9BB0; }
+    .articulo { background:var(--card-bg); border-radius:var(--radius); box-shadow:0 1px 3px rgba(0,0,0,0.06); margin-bottom:6px; border:1px solid #D0DCE5; overflow:hidden; }
+    .art-header { display:flex; align-items:center; gap:10px; width:100%; padding:11px 14px; background:none; border:none; text-align:left; cursor:pointer; transition:background var(--transition); min-height:46px; }
+    .art-header:hover { background:#F4F8FB; }
+    .art-header.open { background:#EBF2F7; }
+    .art-num { font-weight:700; font-size:0.94rem; min-width:58px; flex-shrink:0; }
+    .art-titulo { flex:1; font-size:0.90rem; color:var(--text); line-height:1.3; }
+    .art-toggle { font-size:0.75rem; color:#B0C5D5; transition:transform var(--transition); flex-shrink:0; }
+    .art-header.open .art-toggle { transform:rotate(180deg); }
+    .art-body { display:none; border-top:1px solid #D0DCE5; }
+    .art-body.open { display:block; }
+    .art-text { padding:16px 20px; font-size:0.92rem; line-height:1.85; color:var(--text); }
+    .art-text p { margin-bottom:10px; }
+    .art-text p:last-child { margin-bottom:0; }
+    .highlight { background:#FFF0D9; border-radius:3px; padding:0 2px; }
+    .highlight.current { background:var(--accent); color:#fff; }
+
+    /* BOTTOM NAV */
+    .bottom-nav { display:none; position:fixed; bottom:0; left:0; right:0; height:var(--bottomnav-h); background:var(--card-bg); border-top:1px solid #D0DCE5; box-shadow:0 -2px 12px rgba(0,0,0,0.09); z-index:200; align-items:stretch; }
+    .bottom-nav-item { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; background:none; border:none; color:#7A9BB0; font-size:0.66rem; font-weight:600; cursor:pointer; transition:color var(--transition),background var(--transition); padding:6px 4px; min-height:var(--bottomnav-h); }
+    .bottom-nav-item .bn-icon { font-size:1.2rem; line-height:1; }
+    .bottom-nav-item:hover, .bottom-nav-item.active { color:var(--primary); background:rgba(26,58,76,0.06); }
+
+    /* RESPONSIVE */
+    @media (min-width:1024px) {
+      .hamburger { display:none; }
+      .app-sidebar { transform:translateX(0) !important; }
+      .main-content { margin-left:var(--sidebar-w); }
+      .bottom-nav { display:none !important; }
+    }
+    @media (min-width:768px) and (max-width:1023px) {
+      .topbar-search input { width:120px; }
+      .bottom-nav { display:none; }
+    }
+    @media (max-width:767px) {
+      .topbar-search { display:none; }
+      .goto-art { display:none; }
+      .bottom-nav { display:flex; }
+      .main-content { padding-bottom:calc(var(--bottomnav-h) + 8px); }
+      .portada-wrap { padding:32px 14px 28px; }
+      .portada-banner { padding:28px 20px; }
+      .portada-title { font-size:1.3rem; }
+      .portada-cards { grid-template-columns:1fr 1fr; }
+      .portada-stats { gap:12px; padding:14px 16px; }
+      .indice-lista { padding:16px 12px 80px; }
+      .contenido-wrap { padding:16px 12px 80px; }
+      .breadcrumb { display:none; }
+    }
+    @media (max-width:480px) { .portada-cards { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="app-sidebar" id="appSidebar">
+  <div class="sidebar-header">🏢 Ley Propiedad Horizontal</div>
+  <nav class="sidebar-nav">
+    <button class="sidebar-nav-item" onclick="showPage('inicio');closeSidebar()">
+      <span class="item-dot" style="background:#C87941"></span> 🏠 Inicio
+    </button>
+    <button class="sidebar-nav-item" onclick="showPage('indice');closeSidebar()">
+      <span class="item-dot" style="background:#1A3A4C"></span> 📋 Índice General
+    </button>
+    <button class="sidebar-nav-item" onclick="showPage('contenido');closeSidebar()">
+      <span class="item-dot" style="background:#1E4D6B"></span> 📖 Ver Artículos
+    </button>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">Títulos y Capítulos</div>
+    
+    <button class="sidebar-nav-item" onclick="navToArt(1);closeSidebar()">
+      <span class="item-dot" style="background:#1A3A4C"></span> Tít. I — Disposiciones Generales
+    </button>
+    <button class="sidebar-nav-item" onclick="navToArt(7);closeSidebar()">
+      <span class="item-dot" style="background:#1A3A4C"></span> Tít. II — Comunidad de Bienes
+    </button>
+    <button class="sidebar-nav-item" onclick="navToArt(10);closeSidebar()">
+      <span class="item-dot" style="background:#1A3A4C"></span> Tít. III — Valores Inmobiliarios
+    </button>
+    <button class="sidebar-nav-item" onclick="navToArt(12);closeSidebar()">
+      <span class="item-dot" style="background:#1A3A4C"></span> Tít. IV — Unidades Inmobiliarias y Bienes Ane
+    </button>
+    <button class="sidebar-nav-item" onclick="navToArt(16);closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B"></span> Tít. V — Bienes Comunes y Privativos
+    </button>
+    <button class="sidebar-nav-item" onclick="navToArt(37);closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B"></span> Tít. VI — Constitución del Régimen de Propied
+    </button>
+    <button class="sidebar-nav-item" onclick="navToArt(46);closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B"></span> Tít. VII — Administración de la Propiedad Hor
+    </button>
+    <button class="sidebar-nav-item sidebar-sub" onclick="navToArt(46);closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B;opacity:0.5"></span> CAPÍTULO I — Fondo para Imprevistos
+    </button>
+    <button class="sidebar-nav-item sidebar-sub" onclick="navToArt(49);closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B;opacity:0.5"></span> CAPÍTULO II — Reglamento de Copropiedad
+    </button>
+    <button class="sidebar-nav-item sidebar-sub" onclick="navToArt(52);closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B;opacity:0.5"></span> CAPÍTULO III — Promotor
+    </button>
+    <button class="sidebar-nav-item sidebar-sub" onclick="navToArt(56);closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B;opacity:0.5"></span> CAPÍTULO IV — Propietarios
+    </button>
+    <button class="sidebar-nav-item sidebar-sub" onclick="navToArt(58);closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B;opacity:0.5"></span> CAPÍTULO V — Asamblea de Propietarios
+    </button>
+    <button class="sidebar-nav-item sidebar-sub" onclick="navToArt(73);closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B;opacity:0.5"></span> CAPÍTULO VI — Junta Directiva
+    </button>
+    <button class="sidebar-nav-item sidebar-sub" onclick="navToArt(87);closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B;opacity:0.5"></span> CAPÍTULO VII — Funciones de los Director
+    </button>
+    <button class="sidebar-nav-item sidebar-sub" onclick="navToArt(91);closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B;opacity:0.5"></span> CAPÍTULO VIII — Administrador
+    </button>
+    <button class="sidebar-nav-item sidebar-sub" onclick="navToArt(98);closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B;opacity:0.5"></span> CAPÍTULO IX — Comités
+    </button>
+    <button class="sidebar-nav-item sidebar-sub" onclick="navToArt(103);closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B;opacity:0.5"></span> CAPÍTULO X — Proindivisión
+    </button>
+    <button class="sidebar-nav-item" onclick="navToArt(108);closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B"></span> Tít. VIII — Dirección de Propiedad Horizontal
+    </button>
+    <button class="sidebar-nav-item" onclick="navToArt(109);closeSidebar()">
+      <span class="item-dot" style="background:#1A3A4C"></span> Tít. IX — Resolución de Conflictos
+    </button>
+    <button class="sidebar-nav-item" onclick="navToArt(112);closeSidebar()">
+      <span class="item-dot" style="background:#1E4D6B"></span> Tít. X — Disposiciones Complementarias
+    </button>
+    <button class="sidebar-nav-item" onclick="navToArt(118);closeSidebar()">
+      <span class="item-dot" style="background:#1E4D6B"></span> Tít. XI — Disposición Adicional
+    </button>
+    <button class="sidebar-nav-item" onclick="navToArt(119);closeSidebar()">
+      <span class="item-dot" style="background:#1E4D6B"></span> Tít. XII — Disposiciones Finales
+    </button>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">Búsqueda</div>
+    <button class="sidebar-nav-item" onclick="focusSearch();closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B"></span> 🔍 Buscar término
+    </button>
+    <button class="sidebar-nav-item" onclick="focusGoto();closeSidebar()">
+      <span class="item-dot" style="background:#0D6B6B"></span> # Ir a artículo N°
+    </button>
+  </nav>
+</aside>
+
+<div class="app-shell">
+<main class="main-content">
+
+  <div class="topbar">
+    <button class="hamburger" id="hamburgerBtn" onclick="toggleSidebar()" aria-label="Abrir menú">☰</button>
+    <nav class="breadcrumb" id="breadcrumb">
+      <a href="#" onclick="showPage('inicio');return false">🏠 Inicio</a>
+    </nav>
+    <div class="topbar-search">
+      <input type="text" id="topbarSearch" placeholder="Buscar término…" oninput="globalSearch(this.value)">
+      <button onclick="clearSearch()" title="Limpiar">✕</button>
+    </div>
+    <div class="goto-art">
+      <input type="number" id="gotoInput" placeholder="Art. N°" min="1" max="125"
+        onkeydown="if(event.key==='Enter') goToArtNum()">
+      <button onclick="goToArtNum()">Ir</button>
+    </div>
+  </div>
+
+  <div class="search-results-bar" id="searchResultsBar">
+    <span id="searchResultsText">0 resultados</span>
+    <button onclick="prevSearchResult()">◀ Anterior</button>
+    <button onclick="nextSearchResult()">Siguiente ▶</button>
+    <button onclick="clearSearch()">✕ Cerrar</button>
+  </div>
+
+  <!-- PORTADA -->
+  <section class="page active" id="page-inicio">
+    <div class="portada-wrap">
+      <div class="portada-banner">
+        <span class="portada-icon">🏢</span>
+        <h1 class="portada-title">Ley de Propiedad Horizontal<br>de la República de Panamá</h1>
+        <p class="portada-subtitle">Sobre el régimen de propiedad horizontal · Subroga la Ley 31 de 2010</p>
+        <p class="portada-date">Ley N° 284 del 14 de febrero de 2022</p>
+      </div>
+      <div class="portada-cards">
+        <div class="portada-card" style="--card-accent:#1A3A4C" onclick="navToArt(1)">
+          <span class="card-icon">🏗️</span>
+          <span class="card-label">Títulos I–VI</span>
+          <span class="card-title">Régimen, Bienes y Constitución</span>
+          <span class="card-range">Arts. 1–45</span>
+        </div>
+        <div class="portada-card" style="--card-accent:#7A4419" onclick="navToArt(46)">
+          <span class="card-icon">⚙️</span>
+          <span class="card-label">Título VII</span>
+          <span class="card-title">Administración de la P.H.</span>
+          <span class="card-range">Arts. 46–107</span>
+        </div>
+        <div class="portada-card" style="--card-accent:#1A3A4C" onclick="navToArt(108)">
+          <span class="card-icon">🏛️</span>
+          <span class="card-label">Título VIII</span>
+          <span class="card-title">Dirección de Propiedad Horizontal</span>
+          <span class="card-range">Art. 108</span>
+        </div>
+        <div class="portada-card" style="--card-accent:#3D2B6B" onclick="navToArt(109)">
+          <span class="card-icon">⚖️</span>
+          <span class="card-label">Título IX</span>
+          <span class="card-title">Resolución de Conflictos</span>
+          <span class="card-range">Arts. 109–111</span>
+        </div>
+        <div class="portada-card" style="--card-accent:#0D6B6B" onclick="navToArt(112)">
+          <span class="card-icon">📋</span>
+          <span class="card-label">Títulos X–XII</span>
+          <span class="card-title">Disposiciones Complementarias y Finales</span>
+          <span class="card-range">Arts. 112–125</span>
+        </div></div>
+      <div class="portada-stats">
+        <div class="portada-stat"><strong>125</strong><span>Artículos</span></div>
+        <div class="portada-stat"><strong>12</strong><span>Títulos</span></div>
+        <div class="portada-stat"><strong>10</strong><span>Capítulos</span></div>
+        <div class="portada-stat"><strong>2022</strong><span>Año</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ÍNDICE -->
+  <section class="page" id="page-indice">
+    <div class="indice-header">
+      <h1>Índice — Ley N° 284 de 2022</h1>
+      <p>Ley de Propiedad Horizontal · República de Panamá · 125 artículos · 12 Títulos</p>
+    </div>
+    <div class="indice-lista">
+      <div class="indice-titulo-card" style="--tit-color:#1A3A4C">
+        <button class="indice-titulo-head" onclick="toggleIndiceTit(this,&apos;it-0&apos;)">
+          <div class="tit-badge">I</div>
+          <div class="tit-info">
+            <h3>TÍTULO I — Disposiciones Generales</h3>
+            <span>Arts. 1–6 · 6 artículos</span>
+          </div>
+          <span class="tit-arrow">▶</span>
+        </button>
+        <div class="indice-titulo-body" id="it-0">
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(1);return false">Disposiciones</a>
+            <span class="c-range">Arts. 1–6</span>
+          </div>
+        </div>
+      </div>
+      <div class="indice-titulo-card" style="--tit-color:#1A3A4C">
+        <button class="indice-titulo-head" onclick="toggleIndiceTit(this,&apos;it-1&apos;)">
+          <div class="tit-badge">II</div>
+          <div class="tit-info">
+            <h3>TÍTULO II — Comunidad de Bienes</h3>
+            <span>Arts. 7–9 · 3 artículos</span>
+          </div>
+          <span class="tit-arrow">▶</span>
+        </button>
+        <div class="indice-titulo-body" id="it-1">
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(7);return false">Disposiciones</a>
+            <span class="c-range">Arts. 7–9</span>
+          </div>
+        </div>
+      </div>
+      <div class="indice-titulo-card" style="--tit-color:#1A3A4C">
+        <button class="indice-titulo-head" onclick="toggleIndiceTit(this,&apos;it-2&apos;)">
+          <div class="tit-badge">III</div>
+          <div class="tit-info">
+            <h3>TÍTULO III — Valores Inmobiliarios</h3>
+            <span>Arts. 10–11 · 2 artículos</span>
+          </div>
+          <span class="tit-arrow">▶</span>
+        </button>
+        <div class="indice-titulo-body" id="it-2">
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(10);return false">Disposiciones</a>
+            <span class="c-range">Arts. 10–11</span>
+          </div>
+        </div>
+      </div>
+      <div class="indice-titulo-card" style="--tit-color:#1A3A4C">
+        <button class="indice-titulo-head" onclick="toggleIndiceTit(this,&apos;it-3&apos;)">
+          <div class="tit-badge">IV</div>
+          <div class="tit-info">
+            <h3>TÍTULO IV — Unidades Inmobiliarias y Bienes Anejos</h3>
+            <span>Arts. 12–15 · 4 artículos</span>
+          </div>
+          <span class="tit-arrow">▶</span>
+        </button>
+        <div class="indice-titulo-body" id="it-3">
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(12);return false">Disposiciones</a>
+            <span class="c-range">Arts. 12–15</span>
+          </div>
+        </div>
+      </div>
+      <div class="indice-titulo-card" style="--tit-color:#0D6B6B">
+        <button class="indice-titulo-head" onclick="toggleIndiceTit(this,&apos;it-4&apos;)">
+          <div class="tit-badge">V</div>
+          <div class="tit-info">
+            <h3>TÍTULO V — Bienes Comunes y Privativos</h3>
+            <span>Arts. 16–36 · 21 artículos</span>
+          </div>
+          <span class="tit-arrow">▶</span>
+        </button>
+        <div class="indice-titulo-body" id="it-4">
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(16);return false">Disposiciones</a>
+            <span class="c-range">Arts. 16–36</span>
+          </div>
+        </div>
+      </div>
+      <div class="indice-titulo-card" style="--tit-color:#0D6B6B">
+        <button class="indice-titulo-head" onclick="toggleIndiceTit(this,&apos;it-5&apos;)">
+          <div class="tit-badge">VI</div>
+          <div class="tit-info">
+            <h3>TÍTULO VI — Constitución del Régimen de Propiedad Horizontal</h3>
+            <span>Arts. 37–45 · 9 artículos</span>
+          </div>
+          <span class="tit-arrow">▶</span>
+        </button>
+        <div class="indice-titulo-body" id="it-5">
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(37);return false">Disposiciones</a>
+            <span class="c-range">Arts. 37–45</span>
+          </div>
+        </div>
+      </div>
+      <div class="indice-titulo-card" style="--tit-color:#0D6B6B">
+        <button class="indice-titulo-head" onclick="toggleIndiceTit(this,&apos;it-6&apos;)">
+          <div class="tit-badge">VII</div>
+          <div class="tit-info">
+            <h3>TÍTULO VII — Administración de la Propiedad Horizontal</h3>
+            <span>Arts. 46–107 · 62 artículos</span>
+          </div>
+          <span class="tit-arrow">▶</span>
+        </button>
+        <div class="indice-titulo-body" id="it-6">
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(46);return false">CAPÍTULO I — Fondo para Imprevistos</a>
+            <span class="c-range">Arts. 46–48</span>
+          </div>
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(49);return false">CAPÍTULO II — Reglamento de Copropiedad</a>
+            <span class="c-range">Arts. 49–51</span>
+          </div>
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(52);return false">CAPÍTULO III — Promotor</a>
+            <span class="c-range">Arts. 52–55</span>
+          </div>
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(56);return false">CAPÍTULO IV — Propietarios</a>
+            <span class="c-range">Arts. 56–57</span>
+          </div>
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(58);return false">CAPÍTULO V — Asamblea de Propietarios</a>
+            <span class="c-range">Arts. 58–72</span>
+          </div>
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(73);return false">CAPÍTULO VI — Junta Directiva</a>
+            <span class="c-range">Arts. 73–86</span>
+          </div>
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(87);return false">CAPÍTULO VII — Funciones de los Directores</a>
+            <span class="c-range">Arts. 87–90</span>
+          </div>
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(91);return false">CAPÍTULO VIII — Administrador</a>
+            <span class="c-range">Arts. 91–97</span>
+          </div>
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(98);return false">CAPÍTULO IX — Comités</a>
+            <span class="c-range">Arts. 98–102</span>
+          </div>
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(103);return false">CAPÍTULO X — Proindivisión</a>
+            <span class="c-range">Arts. 103–107</span>
+          </div>
+        </div>
+      </div>
+      <div class="indice-titulo-card" style="--tit-color:#0D6B6B">
+        <button class="indice-titulo-head" onclick="toggleIndiceTit(this,&apos;it-7&apos;)">
+          <div class="tit-badge">VIII</div>
+          <div class="tit-info">
+            <h3>TÍTULO VIII — Dirección de Propiedad Horizontal</h3>
+            <span>Arts. 108–108 · 1 artículos</span>
+          </div>
+          <span class="tit-arrow">▶</span>
+        </button>
+        <div class="indice-titulo-body" id="it-7">
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(108);return false">Disposiciones</a>
+            <span class="c-range">Arts. 108–108</span>
+          </div>
+        </div>
+      </div>
+      <div class="indice-titulo-card" style="--tit-color:#1A3A4C">
+        <button class="indice-titulo-head" onclick="toggleIndiceTit(this,&apos;it-8&apos;)">
+          <div class="tit-badge">IX</div>
+          <div class="tit-info">
+            <h3>TÍTULO IX — Resolución de Conflictos</h3>
+            <span>Arts. 109–111 · 3 artículos</span>
+          </div>
+          <span class="tit-arrow">▶</span>
+        </button>
+        <div class="indice-titulo-body" id="it-8">
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(109);return false">Disposiciones</a>
+            <span class="c-range">Arts. 109–111</span>
+          </div>
+        </div>
+      </div>
+      <div class="indice-titulo-card" style="--tit-color:#1E4D6B">
+        <button class="indice-titulo-head" onclick="toggleIndiceTit(this,&apos;it-9&apos;)">
+          <div class="tit-badge">X</div>
+          <div class="tit-info">
+            <h3>TÍTULO X — Disposiciones Complementarias</h3>
+            <span>Arts. 112–117 · 6 artículos</span>
+          </div>
+          <span class="tit-arrow">▶</span>
+        </button>
+        <div class="indice-titulo-body" id="it-9">
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(112);return false">Disposiciones</a>
+            <span class="c-range">Arts. 112–117</span>
+          </div>
+        </div>
+      </div>
+      <div class="indice-titulo-card" style="--tit-color:#1E4D6B">
+        <button class="indice-titulo-head" onclick="toggleIndiceTit(this,&apos;it-10&apos;)">
+          <div class="tit-badge">XI</div>
+          <div class="tit-info">
+            <h3>TÍTULO XI — Disposición Adicional</h3>
+            <span>Arts. 118–118 · 1 artículos</span>
+          </div>
+          <span class="tit-arrow">▶</span>
+        </button>
+        <div class="indice-titulo-body" id="it-10">
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(118);return false">Disposiciones</a>
+            <span class="c-range">Arts. 118–118</span>
+          </div>
+        </div>
+      </div>
+      <div class="indice-titulo-card" style="--tit-color:#1E4D6B">
+        <button class="indice-titulo-head" onclick="toggleIndiceTit(this,&apos;it-11&apos;)">
+          <div class="tit-badge">XII</div>
+          <div class="tit-info">
+            <h3>TÍTULO XII — Disposiciones Finales</h3>
+            <span>Arts. 119–125 · 7 artículos</span>
+          </div>
+          <span class="tit-arrow">▶</span>
+        </button>
+        <div class="indice-titulo-body" id="it-11">
+          <div class="indice-cap-row">
+            <a href="#" onclick="navToArt(119);return false">Disposiciones</a>
+            <span class="c-range">Arts. 119–125</span>
+          </div>
+        </div>
+      </div></div>
+  </section>
+
+  <!-- CONTENIDO -->
+  <section class="page" id="page-contenido">
+    <div class="contenido-wrap">
+  <div class="titulo-bloque">
+    <div class="titulo-header" style="background:#1A3A4C">
+      <span class="titulo-nombre">TÍTULO I — Disposiciones Generales</span>
+      <span class="titulo-arts">Arts. 1–6</span>
+    </div>
+    <div class="capitulo-section">
+      <div class="articulo" id="art-1" data-artnum="1">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 1</span>
+          <span class="art-titulo">Se crea el Régimen de Propiedad Horizontal como un tipo especial de propiedad, con indepen…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="1"></div></div>
+      </div>
+      <div class="articulo" id="art-2" data-artnum="2">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 2</span>
+          <span class="art-titulo">El Régimen de Propiedad Horizontal tiene como principios rectores asegurar el mantenimient…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="2"></div></div>
+      </div>
+      <div class="articulo" id="art-3" data-artnum="3">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 3</span>
+          <span class="art-titulo">Podrán pertenecer al Régimen de Propiedad Horizontal: las diversas unidades inmobiliarias …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="3"></div></div>
+      </div>
+      <div class="articulo" id="art-4" data-artnum="4">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 4</span>
+          <span class="art-titulo">Las unidades inmobiliarias a que se refiere el artículo anterior podrán enajenarse, gravar…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="4"></div></div>
+      </div>
+      <div class="articulo" id="art-5" data-artnum="5">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 5</span>
+          <span class="art-titulo">Cuando un bien inmueble se incorpore al Régimen de Propiedad Horizontal y estuviera hipote…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="5"></div></div>
+      </div>
+      <div class="articulo" id="art-6" data-artnum="6">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 6</span>
+          <span class="art-titulo">Para los efectos de esta Ley, los siguientes términos se entenderán así: 1. Acreedor hipot…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="6"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="titulo-bloque">
+    <div class="titulo-header" style="background:#1A3A4C">
+      <span class="titulo-nombre">TÍTULO II — Comunidad de Bienes</span>
+      <span class="titulo-arts">Arts. 7–9</span>
+    </div>
+    <div class="capitulo-section">
+      <div class="articulo" id="art-7" data-artnum="7">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 7</span>
+          <span class="art-titulo">Cuando se trate de un edificio o unidades inmobiliarias edificadas sobre una finca que per…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="7"></div></div>
+      </div>
+      <div class="articulo" id="art-8" data-artnum="8">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 8</span>
+          <span class="art-titulo">En los casos del artículo anterior, el juez concederá a los peritos el término de un mes, …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="8"></div></div>
+      </div>
+      <div class="articulo" id="art-9" data-artnum="9">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 9</span>
+          <span class="art-titulo">Para los efectos de los artículos 7 y 8, cuando la unidad inmobiliaria tenga un gravamen, …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="9"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="titulo-bloque">
+    <div class="titulo-header" style="background:#1A3A4C">
+      <span class="titulo-nombre">TÍTULO III — Valores Inmobiliarios</span>
+      <span class="titulo-arts">Arts. 10–11</span>
+    </div>
+    <div class="capitulo-section">
+      <div class="articulo" id="art-10" data-artnum="10">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 10</span>
+          <span class="art-titulo">El valor de cada unidad inmobiliaria se fijará por cualquiera de los siguientes procedimie…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="10"></div></div>
+      </div>
+      <div class="articulo" id="art-11" data-artnum="11">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 11</span>
+          <span class="art-titulo">Los avalúos ordenados por las leyes tributarias y de valorización deberán hacerse por sepa…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="11"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="titulo-bloque">
+    <div class="titulo-header" style="background:#1A3A4C">
+      <span class="titulo-nombre">TÍTULO IV — Unidades Inmobiliarias y Bienes Anejos</span>
+      <span class="titulo-arts">Arts. 12–15</span>
+    </div>
+    <div class="capitulo-section">
+      <div class="articulo" id="art-12" data-artnum="12">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 12</span>
+          <span class="art-titulo">Cada propietario solo podrá vender a otro propietario de la misma propiedad horizontal los…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="12"></div></div>
+      </div>
+      <div class="articulo" id="art-13" data-artnum="13">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 13</span>
+          <span class="art-titulo">Las unidades inmobiliarias podrán ser modificadas para formar otras, para reducir o aument…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="13"></div></div>
+      </div>
+      <div class="articulo" id="art-14" data-artnum="14">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 14</span>
+          <span class="art-titulo">En las operaciones mercantiles con garantía de bienes sujetos al Régimen de Propiedad Hori…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="14"></div></div>
+      </div>
+      <div class="articulo" id="art-15" data-artnum="15">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 15</span>
+          <span class="art-titulo">Una vez incorporado al Régimen de Propiedad Horizontal, el propietario inicial o la Asambl…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="15"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="titulo-bloque">
+    <div class="titulo-header" style="background:#0D6B6B">
+      <span class="titulo-nombre">TÍTULO V — Bienes Comunes y Privativos</span>
+      <span class="titulo-arts">Arts. 16–36</span>
+    </div>
+    <div class="capitulo-section">
+      <div class="articulo" id="art-16" data-artnum="16">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 16</span>
+          <span class="art-titulo">Son bienes comunes esenciales y del dominio inalienable e indivisible aquellos que cumplan…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="16"></div></div>
+      </div>
+      <div class="articulo" id="art-17" data-artnum="17">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 17</span>
+          <span class="art-titulo">Son bienes comunes los sótanos, ascensores, incineradores, buzones, áreas de estacionamien…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="17"></div></div>
+      </div>
+      <div class="articulo" id="art-18" data-artnum="18">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 18</span>
+          <span class="art-titulo">Pertenecerán en comunidad únicamente para los propietarios de unidades inmobiliarias de un…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="18"></div></div>
+      </div>
+      <div class="articulo" id="art-19" data-artnum="19">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 19</span>
+          <span class="art-titulo">La Asamblea de Propietarios podrá aprobar por el 51% o más de la totalidad de las unidades…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="19"></div></div>
+      </div>
+      <div class="articulo" id="art-20" data-artnum="20">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 20</span>
+          <span class="art-titulo">La Asamblea de Propietarios, en decisión tomada por el 51% o más de la totalidad de las un…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="20"></div></div>
+      </div>
+      <div class="articulo" id="art-21" data-artnum="21">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 21</span>
+          <span class="art-titulo">Salvo la obligación de pagar las cuotas de gastos comunes, que son de carácter real, los d…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="21"></div></div>
+      </div>
+      <div class="articulo" id="art-22" data-artnum="22">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 22</span>
+          <span class="art-titulo">El coeficiente de participación sobre los bienes comunes será proporcional al valor de la …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="22"></div></div>
+      </div>
+      <div class="articulo" id="art-23" data-artnum="23">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 23</span>
+          <span class="art-titulo">Las cuotas de gastos comunes de las unidades inmobiliarias deberán ser canceladas mensualm…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="23"></div></div>
+      </div>
+      <div class="articulo" id="art-24" data-artnum="24">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 24</span>
+          <span class="art-titulo">Los propietarios de unidades inmobiliarias con elementos compartidos costearán por partes …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="24"></div></div>
+      </div>
+      <div class="articulo" id="art-25" data-artnum="25">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 25</span>
+          <span class="art-titulo">Cada propietario deberá contribuir con los gastos necesarios para la administración, conse…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="25"></div></div>
+      </div>
+      <div class="articulo" id="art-26" data-artnum="26">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 26</span>
+          <span class="art-titulo">La cuota de gastos comunes podrá ser fijada en forma distinta si así lo acuerda la Asamble…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="26"></div></div>
+      </div>
+      <div class="articulo" id="art-27" data-artnum="27">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 27</span>
+          <span class="art-titulo">A partir de la expedición del permiso de ocupación de la unidad inmobiliaria, el promotor …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="27"></div></div>
+      </div>
+      <div class="articulo" id="art-28" data-artnum="28">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 28</span>
+          <span class="art-titulo">Cuando alguno de los propietarios incumpla su obligación de pago de las cuotas de gastos c…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="28"></div></div>
+      </div>
+      <div class="articulo" id="art-29" data-artnum="29">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 29</span>
+          <span class="art-titulo">Quien ocupe, a cualquier título, alguna unidad inmobiliaria será responsable de los daños …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="29"></div></div>
+      </div>
+      <div class="articulo" id="art-30" data-artnum="30">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 30</span>
+          <span class="art-titulo">Cada propietario utilizará su unidad inmobiliaria de acuerdo con su destino previsto en la…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="30"></div></div>
+      </div>
+      <div class="articulo" id="art-31" data-artnum="31">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 31</span>
+          <span class="art-titulo">Cada propietario utilizará los bienes comunes según su destino y de acuerdo con el Reglame…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="31"></div></div>
+      </div>
+      <div class="articulo" id="art-32" data-artnum="32">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 32</span>
+          <span class="art-titulo">Se prohíbe a los propietarios de las unidades inmobiliarias y a quienes las ocupen a cualq…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="32"></div></div>
+      </div>
+      <div class="articulo" id="art-33" data-artnum="33">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 33</span>
+          <span class="art-titulo">La infracción a cualquiera de las prohibiciones contenidas en el artículo anterior dará lu…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="33"></div></div>
+      </div>
+      <div class="articulo" id="art-34" data-artnum="34">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 34</span>
+          <span class="art-titulo">Quien ocupe a cualquier título alguna unidad inmobiliaria tendrá la obligación de permitir…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="34"></div></div>
+      </div>
+      <div class="articulo" id="art-35" data-artnum="35">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 35</span>
+          <span class="art-titulo">La modificación de cuotas de gastos comunes ordinaria o la aprobación de cuotas extraordin…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="35"></div></div>
+      </div>
+      <div class="articulo" id="art-36" data-artnum="36">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 36</span>
+          <span class="art-titulo">Cuando se trate de mejoras adicionales a las ya existentes al momento de incorporarse la p…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="36"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="titulo-bloque">
+    <div class="titulo-header" style="background:#0D6B6B">
+      <span class="titulo-nombre">TÍTULO VI — Constitución del Régimen de Propiedad Horizontal</span>
+      <span class="titulo-arts">Arts. 37–45</span>
+    </div>
+    <div class="capitulo-section">
+      <div class="articulo" id="art-37" data-artnum="37">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 37</span>
+          <span class="art-titulo">Se faculta al Ministerio de Vivienda y Ordenamiento Territorial para establecer las normas…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="37"></div></div>
+      </div>
+      <div class="articulo" id="art-38" data-artnum="38">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 38</span>
+          <span class="art-titulo">El Régimen de Propiedad Horizontal se constituye en tres fases: la aprobación del Minister…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="38"></div></div>
+      </div>
+      <div class="articulo" id="art-39" data-artnum="39">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 39</span>
+          <span class="art-titulo">El título constitutivo mediante el cual se incorpore un inmueble al Régimen de Propiedad H…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="39"></div></div>
+      </div>
+      <div class="articulo" id="art-40" data-artnum="40">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 40</span>
+          <span class="art-titulo">Todas las operaciones sobre inmuebles sujetos al Régimen de Propiedad Horizontal se inscri…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="40"></div></div>
+      </div>
+      <div class="articulo" id="art-41" data-artnum="41">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 41</span>
+          <span class="art-titulo">Cuando se trate de la inscripción de la segregación de una unidad inmobiliaria, será neces…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="41"></div></div>
+      </div>
+      <div class="articulo" id="art-42" data-artnum="42">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 42</span>
+          <span class="art-titulo">Los proyectos destinados al Régimen de Propiedad Horizontal cuyo desarrollo sea por etapas…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="42"></div></div>
+      </div>
+      <div class="articulo" id="art-43" data-artnum="43">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 43</span>
+          <span class="art-titulo">En caso de que se solicite la incorporación al Régimen de Propiedad Horizontal de una edif…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="43"></div></div>
+      </div>
+      <div class="articulo" id="art-44" data-artnum="44">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 44</span>
+          <span class="art-titulo">El promotor o propietario pagará al Ministerio de Vivienda y Ordenamiento Territorial una …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="44"></div></div>
+      </div>
+      <div class="articulo" id="art-45" data-artnum="45">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 45</span>
+          <span class="art-titulo">En los casos de proyectos de lotificación, parcelación o urbanización con lotes servidos, …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="45"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="titulo-bloque">
+    <div class="titulo-header" style="background:#0D6B6B">
+      <span class="titulo-nombre">TÍTULO VII — Administración de la Propiedad Horizontal</span>
+      <span class="titulo-arts">Arts. 46–107</span>
+    </div>
+    <div class="capitulo-section">
+      <div class="cap-header" style="border-left:4px solid #0D6B6B">
+        <span class="cap-nombre">CAPÍTULO I — Fondo para Imprevistos</span>
+        <span class="cap-arts">Arts. 46–48</span>
+      </div>
+      <div class="articulo" id="art-46" data-artnum="46">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 46</span>
+          <span class="art-titulo">Se crea obligatoriamente el Fondo para Imprevistos para atender y financiar las obligacion…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="46"></div></div>
+      </div>
+      <div class="articulo" id="art-47" data-artnum="47">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 47</span>
+          <span class="art-titulo">El Fondo para Imprevistos corresponde como mínimo al 1% de la totalidad de los ingresos y …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="47"></div></div>
+      </div>
+      <div class="articulo" id="art-48" data-artnum="48">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 48</span>
+          <span class="art-titulo">De requerir el uso del Fondo para Imprevistos, la Junta Directiva deberá justificar su nec…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="48"></div></div>
+      </div>
+    </div>
+    <div class="capitulo-section">
+      <div class="cap-header" style="border-left:4px solid #0D6B6B">
+        <span class="cap-nombre">CAPÍTULO II — Reglamento de Copropiedad</span>
+        <span class="cap-arts">Arts. 49–51</span>
+      </div>
+      <div class="articulo" id="art-49" data-artnum="49">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 49</span>
+          <span class="art-titulo">El Reglamento de Copropiedad deberá contener una serie de elementos mínimos incluyendo: no…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="49"></div></div>
+      </div>
+      <div class="articulo" id="art-50" data-artnum="50">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 50</span>
+          <span class="art-titulo">Para modificar el Reglamento de Copropiedad se requiere un acuerdo tomado en Asamblea de P…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="50"></div></div>
+      </div>
+      <div class="articulo" id="art-51" data-artnum="51">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 51</span>
+          <span class="art-titulo">En la reunión de la Asamblea de Propietarios, cada unidad inmobiliaria inscrita en el Regi…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="51"></div></div>
+      </div>
+    </div>
+    <div class="capitulo-section">
+      <div class="cap-header" style="border-left:4px solid #0D6B6B">
+        <span class="cap-nombre">CAPÍTULO III — Promotor</span>
+        <span class="cap-arts">Arts. 52–55</span>
+      </div>
+      <div class="articulo" id="art-52" data-artnum="52">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 52</span>
+          <span class="art-titulo">El promotor y/o propietario inicial será responsable de cumplir las disposiciones referent…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="52"></div></div>
+      </div>
+      <div class="articulo" id="art-53" data-artnum="53">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 53</span>
+          <span class="art-titulo">El promotor deberá entregar a la Junta Directiva transitoria los bienes y áreas comunes de…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="53"></div></div>
+      </div>
+      <div class="articulo" id="art-54" data-artnum="54">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 54</span>
+          <span class="art-titulo">El promotor debe entregar a la Junta Directiva transitoria una serie de documentos mínimos…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="54"></div></div>
+      </div>
+      <div class="articulo" id="art-55" data-artnum="55">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 55</span>
+          <span class="art-titulo">El promotor tendrá, como mínimo, los siguientes derechos: establecer reservas; establecer …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="55"></div></div>
+      </div>
+    </div>
+    <div class="capitulo-section">
+      <div class="cap-header" style="border-left:4px solid #0D6B6B">
+        <span class="cap-nombre">CAPÍTULO IV — Propietarios</span>
+        <span class="cap-arts">Arts. 56–57</span>
+      </div>
+      <div class="articulo" id="art-56" data-artnum="56">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 56</span>
+          <span class="art-titulo">Los propietarios serán responsables en lo referente a la participación, conservación y man…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="56"></div></div>
+      </div>
+      <div class="articulo" id="art-57" data-artnum="57">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 57</span>
+          <span class="art-titulo">El propietario tendrá, como mínimo, los siguientes derechos: recibir información; presenta…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="57"></div></div>
+      </div>
+    </div>
+    <div class="capitulo-section">
+      <div class="cap-header" style="border-left:4px solid #0D6B6B">
+        <span class="cap-nombre">CAPÍTULO V — Asamblea de Propietarios</span>
+        <span class="cap-arts">Arts. 58–72</span>
+      </div>
+      <div class="articulo" id="art-58" data-artnum="58">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 58</span>
+          <span class="art-titulo">La Asamblea de Propietarios es el máximo organismo dentro del Régimen de Propiedad Horizon…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="58"></div></div>
+      </div>
+      <div class="articulo" id="art-59" data-artnum="59">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 59</span>
+          <span class="art-titulo">El representante legal de la Asamblea de Propietarios será el presidente y, como tal, repr…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="59"></div></div>
+      </div>
+      <div class="articulo" id="art-60" data-artnum="60">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 60</span>
+          <span class="art-titulo">La administración, mantenimiento y conservación de los bienes comunes de la propiedad hori…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="60"></div></div>
+      </div>
+      <div class="articulo" id="art-61" data-artnum="61">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 61</span>
+          <span class="art-titulo">La Asamblea de Propietarios se reunirá en sesión ordinaria obligatoriamente, por lo menos,…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="61"></div></div>
+      </div>
+      <div class="articulo" id="art-62" data-artnum="62">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 62</span>
+          <span class="art-titulo">La convocatoria a Asamblea ordinaria se hará con no menos de diez ni más de veinte días ca…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="62"></div></div>
+      </div>
+      <div class="articulo" id="art-63" data-artnum="63">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 63</span>
+          <span class="art-titulo">La reunión ordinaria de la Asamblea de Propietarios podrá ser convocada por derecho propio…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="63"></div></div>
+      </div>
+      <div class="articulo" id="art-64" data-artnum="64">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 64</span>
+          <span class="art-titulo">La Asamblea de Propietarios se podrá reunir de forma extraordinaria cuando las necesidades…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="64"></div></div>
+      </div>
+      <div class="articulo" id="art-65" data-artnum="65">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 65</span>
+          <span class="art-titulo">La convocatoria extraordinaria de la Asamblea de Propietarios se realizará con no menos de…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="65"></div></div>
+      </div>
+      <div class="articulo" id="art-66" data-artnum="66">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 66</span>
+          <span class="art-titulo">Las convocatorias a las reuniones de Asamblea ordinaria o extraordinaria deben contener re…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="66"></div></div>
+      </div>
+      <div class="articulo" id="art-67" data-artnum="67">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 67</span>
+          <span class="art-titulo">La reunión de la Asamblea de Propietarios se considera legalmente constituida con el quoru…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="67"></div></div>
+      </div>
+      <div class="articulo" id="art-68" data-artnum="68">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 68</span>
+          <span class="art-titulo">En todas las reuniones de la Asamblea de Propietarios, los propietarios podrán hacerse rep…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="68"></div></div>
+      </div>
+      <div class="articulo" id="art-69" data-artnum="69">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 69</span>
+          <span class="art-titulo">La Asamblea de Propietarios será presidida por el presidente, a falta de este, por el vice…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="69"></div></div>
+      </div>
+      <div class="articulo" id="art-70" data-artnum="70">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 70</span>
+          <span class="art-titulo">Las decisiones de la Asamblea de Propietarios para que surtan efecto legal y sean de oblig…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="70"></div></div>
+      </div>
+      <div class="articulo" id="art-71" data-artnum="71">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 71</span>
+          <span class="art-titulo">Las decisiones de la Asamblea de Propietarios se harán constar en un acta que expresará, c…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="71"></div></div>
+      </div>
+      <div class="articulo" id="art-72" data-artnum="72">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 72</span>
+          <span class="art-titulo">El acta de la Asamblea de Propietarios en la cual se elija la Junta Directiva o el adminis…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="72"></div></div>
+      </div>
+    </div>
+    <div class="capitulo-section">
+      <div class="cap-header" style="border-left:4px solid #0D6B6B">
+        <span class="cap-nombre">CAPÍTULO VI — Junta Directiva</span>
+        <span class="cap-arts">Arts. 73–86</span>
+      </div>
+      <div class="articulo" id="art-73" data-artnum="73">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 73</span>
+          <span class="art-titulo">Para los efectos de la Asamblea de Propietarios y de administración del bien sujeto al Rég…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="73"></div></div>
+      </div>
+      <div class="articulo" id="art-74" data-artnum="74">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 74</span>
+          <span class="art-titulo">Los miembros de la Junta Directiva serán de libre nombramiento y remoción por parte de la …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="74"></div></div>
+      </div>
+      <div class="articulo" id="art-75" data-artnum="75">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 75</span>
+          <span class="art-titulo">Solo podrán ser miembros de la Junta Directiva las personas que: sean propietarias; prefer…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="75"></div></div>
+      </div>
+      <div class="articulo" id="art-76" data-artnum="76">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 76</span>
+          <span class="art-titulo">Los directores electos por la Asamblea de Propietarios podrán recibir los beneficios que e…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="76"></div></div>
+      </div>
+      <div class="articulo" id="art-77" data-artnum="77">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 77</span>
+          <span class="art-titulo">El miembro de la Junta Directiva que decida renunciar a su cargo antes de finalizar su per…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="77"></div></div>
+      </div>
+      <div class="articulo" id="art-78" data-artnum="78">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 78</span>
+          <span class="art-titulo">Los miembros de la Junta Directiva podrán renunciar, por cualquier motivo, a los cargos a …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="78"></div></div>
+      </div>
+      <div class="articulo" id="art-79" data-artnum="79">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 79</span>
+          <span class="art-titulo">Los nombramientos de los miembros de la Junta Directiva se protocolizarán e inscribirán en…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="79"></div></div>
+      </div>
+      <div class="articulo" id="art-80" data-artnum="80">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 80</span>
+          <span class="art-titulo">La Junta Directiva será responsable de cumplir y hacer cumplir las decisiones de la Asambl…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="80"></div></div>
+      </div>
+      <div class="articulo" id="art-81" data-artnum="81">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 81</span>
+          <span class="art-titulo">Los fondos provenientes de la administración deberán ser depositados en el banco o bancos …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="81"></div></div>
+      </div>
+      <div class="articulo" id="art-82" data-artnum="82">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 82</span>
+          <span class="art-titulo">El porcentaje de las cuotas de gastos comunes destinado para el Fondo para Imprevistos deb…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="82"></div></div>
+      </div>
+      <div class="articulo" id="art-83" data-artnum="83">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 83</span>
+          <span class="art-titulo">Los miembros de la Junta Directiva no serán responsables personal, civil, administrativa o…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="83"></div></div>
+      </div>
+      <div class="articulo" id="art-84" data-artnum="84">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 84</span>
+          <span class="art-titulo">La Junta Directiva deberá reunirse en sesión ordinaria, en la fecha señalada en el Reglame…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="84"></div></div>
+      </div>
+      <div class="articulo" id="art-85" data-artnum="85">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 85</span>
+          <span class="art-titulo">Las convocatorias para las reuniones de la Junta Directiva las efectuará el presidente, en…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="85"></div></div>
+      </div>
+      <div class="articulo" id="art-86" data-artnum="86">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 86</span>
+          <span class="art-titulo">Para constituir quorum en una reunión de Junta Directiva, se requerirá, por lo menos, de l…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="86"></div></div>
+      </div>
+    </div>
+    <div class="capitulo-section">
+      <div class="cap-header" style="border-left:4px solid #0D6B6B">
+        <span class="cap-nombre">CAPÍTULO VII — Funciones de los Directores</span>
+        <span class="cap-arts">Arts. 87–90</span>
+      </div>
+      <div class="articulo" id="art-87" data-artnum="87">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 87</span>
+          <span class="art-titulo">Son funciones del presidente: ostentar la representación legal; presidir reuniones; convoc…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="87"></div></div>
+      </div>
+      <div class="articulo" id="art-88" data-artnum="88">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 88</span>
+          <span class="art-titulo">Son funciones del secretario: ejercer representación legal en ausencia del presidente; pre…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="88"></div></div>
+      </div>
+      <div class="articulo" id="art-89" data-artnum="89">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 89</span>
+          <span class="art-titulo">Son funciones del tesorero: ejercer representación legal en ausencia del presidente y secr…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="89"></div></div>
+      </div>
+      <div class="articulo" id="art-90" data-artnum="90">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 90</span>
+          <span class="art-titulo">Son funciones del vocal: ejercer representación legal a falta de los demás miembros; presi…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="90"></div></div>
+      </div>
+    </div>
+    <div class="capitulo-section">
+      <div class="cap-header" style="border-left:4px solid #0D6B6B">
+        <span class="cap-nombre">CAPÍTULO VIII — Administrador</span>
+        <span class="cap-arts">Arts. 91–97</span>
+      </div>
+      <div class="articulo" id="art-91" data-artnum="91">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 91</span>
+          <span class="art-titulo">El administrador será nombrado por la Junta Directiva mediante el voto favorable de la may…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="91"></div></div>
+      </div>
+      <div class="articulo" id="art-92" data-artnum="92">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 92</span>
+          <span class="art-titulo">Quien desempeñe el cargo de administrador de una propiedad horizontal deberá tener perfil …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="92"></div></div>
+      </div>
+      <div class="articulo" id="art-93" data-artnum="93">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 93</span>
+          <span class="art-titulo">El administrador tendrá diversas obligaciones incluyendo: velar por el cumplimiento de las…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="93"></div></div>
+      </div>
+      <div class="articulo" id="art-94" data-artnum="94">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 94</span>
+          <span class="art-titulo">El administrador debe elaborar el proyecto de presupuesto y el informe de ingresos y egres…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="94"></div></div>
+      </div>
+      <div class="articulo" id="art-95" data-artnum="95">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 95</span>
+          <span class="art-titulo">El proyecto de presupuesto y el informe de ingresos y egresos deberán ser enviados obligat…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="95"></div></div>
+      </div>
+      <div class="articulo" id="art-96" data-artnum="96">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 96</span>
+          <span class="art-titulo">El administrador tendrá la responsabilidad de conocer el alcance de sus funciones y obliga…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="96"></div></div>
+      </div>
+      <div class="articulo" id="art-97" data-artnum="97">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 97</span>
+          <span class="art-titulo">El administrador y el personal a su cargo deberán respetar los derechos que les asistan a …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="97"></div></div>
+      </div>
+    </div>
+    <div class="capitulo-section">
+      <div class="cap-header" style="border-left:4px solid #0D6B6B">
+        <span class="cap-nombre">CAPÍTULO IX — Comités</span>
+        <span class="cap-arts">Arts. 98–102</span>
+      </div>
+      <div class="articulo" id="art-98" data-artnum="98">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 98</span>
+          <span class="art-titulo">En las propiedades horizontales multiusos, para simplificar su administración se permitirá…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="98"></div></div>
+      </div>
+      <div class="articulo" id="art-99" data-artnum="99">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 99</span>
+          <span class="art-titulo">El Comité de Componente estará conformado, como mínimo, por un coordinador y un secretario…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="99"></div></div>
+      </div>
+      <div class="articulo" id="art-100" data-artnum="100">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 100</span>
+          <span class="art-titulo">El Reglamento de Copropiedad podrá señalar un número mayor de propietarios que podrán conf…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="100"></div></div>
+      </div>
+      <div class="articulo" id="art-101" data-artnum="101">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 101</span>
+          <span class="art-titulo">El Comité de Componente tendrá las funciones que se dispongan en el Reglamento de Copropie…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="101"></div></div>
+      </div>
+      <div class="articulo" id="art-102" data-artnum="102">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 102</span>
+          <span class="art-titulo">El Comité de Transición será un conjunto conformado por los primeros propietarios del inmu…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="102"></div></div>
+      </div>
+    </div>
+    <div class="capitulo-section">
+      <div class="cap-header" style="border-left:4px solid #0D6B6B">
+        <span class="cap-nombre">CAPÍTULO X — Proindivisión</span>
+        <span class="cap-arts">Arts. 103–107</span>
+      </div>
+      <div class="articulo" id="art-103" data-artnum="103">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 103</span>
+          <span class="art-titulo">La proindivisión que establece esta Ley es forzosa, y los propietarios no podrán acordar q…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="103"></div></div>
+      </div>
+      <div class="articulo" id="art-104" data-artnum="104">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 104</span>
+          <span class="art-titulo">En caso de haber sido destruida parcialmente la edificación, si esta disminuyera su valor …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="104"></div></div>
+      </div>
+      <div class="articulo" id="art-105" data-artnum="105">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 105</span>
+          <span class="art-titulo">Siempre que la edificación amenace ruina, la Asamblea de Propietarios podrá disponer su re…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="105"></div></div>
+      </div>
+      <div class="articulo" id="art-106" data-artnum="106">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 106</span>
+          <span class="art-titulo">Cuando por ocurrir siniestro se requiera cobrar el valor de la indemnización del seguro, e…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="106"></div></div>
+      </div>
+      <div class="articulo" id="art-107" data-artnum="107">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 107</span>
+          <span class="art-titulo">La propiedad horizontal gravada con garantía hipotecaria, que es adquirida con posteriorid…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="107"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="titulo-bloque">
+    <div class="titulo-header" style="background:#0D6B6B">
+      <span class="titulo-nombre">TÍTULO VIII — Dirección de Propiedad Horizontal</span>
+      <span class="titulo-arts">Arts. 108–108</span>
+    </div>
+    <div class="capitulo-section">
+      <div class="articulo" id="art-108" data-artnum="108">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#0D6B6B">Art. 108</span>
+          <span class="art-titulo">El Ministerio de Vivienda y Ordenamiento Territorial, a través de la Dirección de Propieda…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="108"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="titulo-bloque">
+    <div class="titulo-header" style="background:#1A3A4C">
+      <span class="titulo-nombre">TÍTULO IX — Resolución de Conflictos</span>
+      <span class="titulo-arts">Arts. 109–111</span>
+    </div>
+    <div class="capitulo-section">
+      <div class="articulo" id="art-109" data-artnum="109">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 109</span>
+          <span class="art-titulo">Todas las controversias relativas al régimen de propiedad horizontal serán de competencia …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="109"></div></div>
+      </div>
+      <div class="articulo" id="art-110" data-artnum="110">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 110</span>
+          <span class="art-titulo">El Órgano Judicial podrá crear juzgados especializados que conocerán exclusivamente sobre …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="110"></div></div>
+      </div>
+      <div class="articulo" id="art-111" data-artnum="111">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1A3A4C">Art. 111</span>
+          <span class="art-titulo">Las acciones contra decisiones de la Asamblea de Propietarios, Junta Directiva y/o adminis…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="111"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="titulo-bloque">
+    <div class="titulo-header" style="background:#1E4D6B">
+      <span class="titulo-nombre">TÍTULO X — Disposiciones Complementarias</span>
+      <span class="titulo-arts">Arts. 112–117</span>
+    </div>
+    <div class="capitulo-section">
+      <div class="articulo" id="art-112" data-artnum="112">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1E4D6B">Art. 112</span>
+          <span class="art-titulo">Sin perjuicio de dar cumplimiento a las disposiciones contenidas en la presente Ley, los a…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="112"></div></div>
+      </div>
+      <div class="articulo" id="art-113" data-artnum="113">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1E4D6B">Art. 113</span>
+          <span class="art-titulo">El Régimen de Propiedad Horizontal se aplicará a proyectos de interés social, en beneficio…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="113"></div></div>
+      </div>
+      <div class="articulo" id="art-114" data-artnum="114">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1E4D6B">Art. 114</span>
+          <span class="art-titulo">Para la transferencia de una unidad inmobiliaria inscrita bajo el Régimen de Propiedad Hor…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="114"></div></div>
+      </div>
+      <div class="articulo" id="art-115" data-artnum="115">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1E4D6B">Art. 115</span>
+          <span class="art-titulo">La administración de las unidades inmobiliarias informará mensualmente a las instituciones…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="115"></div></div>
+      </div>
+      <div class="articulo" id="art-116" data-artnum="116">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1E4D6B">Art. 116</span>
+          <span class="art-titulo">El usufructo de las áreas y facilidades comunes de la propiedad es inseparable e indivisib…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="116"></div></div>
+      </div>
+      <div class="articulo" id="art-117" data-artnum="117">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1E4D6B">Art. 117</span>
+          <span class="art-titulo">En los contratos de promesa de compraventa y contratos de compraventa de unidades inmobili…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="117"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="titulo-bloque">
+    <div class="titulo-header" style="background:#1E4D6B">
+      <span class="titulo-nombre">TÍTULO XI — Disposición Adicional</span>
+      <span class="titulo-arts">Arts. 118–118</span>
+    </div>
+    <div class="capitulo-section">
+      <div class="articulo" id="art-118" data-artnum="118">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1E4D6B">Art. 118</span>
+          <span class="art-titulo">Se adiciona el artículo 2-A a la Ley 45 de 2007: Se consideran consumidores, siempre que a…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="118"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="titulo-bloque">
+    <div class="titulo-header" style="background:#1E4D6B">
+      <span class="titulo-nombre">TÍTULO XII — Disposiciones Finales</span>
+      <span class="titulo-arts">Arts. 119–125</span>
+    </div>
+    <div class="capitulo-section">
+      <div class="articulo" id="art-119" data-artnum="119">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1E4D6B">Art. 119</span>
+          <span class="art-titulo">Si los miembros de la Junta Directiva o el administrador incumplen las obligaciones previs…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="119"></div></div>
+      </div>
+      <div class="articulo" id="art-120" data-artnum="120">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1E4D6B">Art. 120</span>
+          <span class="art-titulo">En la promesa de compraventa que suscriban el promitente comprador y el promitente vendedo…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="120"></div></div>
+      </div>
+      <div class="articulo" id="art-121" data-artnum="121">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1E4D6B">Art. 121</span>
+          <span class="art-titulo">Para el cálculo de las áreas de las unidades inmobiliarias, se incluirá el área que ocupen…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="121"></div></div>
+      </div>
+      <div class="articulo" id="art-122" data-artnum="122">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1E4D6B">Art. 122</span>
+          <span class="art-titulo">Todos los reglamentos de copropiedad aprobados al amparo de la legislación anterior contin…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="122"></div></div>
+      </div>
+      <div class="articulo" id="art-123" data-artnum="123">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1E4D6B">Art. 123</span>
+          <span class="art-titulo">El Órgano Ejecutivo, a través del Ministerio de Vivienda y Ordenamiento Territorial, regla…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="123"></div></div>
+      </div>
+      <div class="articulo" id="art-124" data-artnum="124">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1E4D6B">Art. 124</span>
+          <span class="art-titulo">La presente Ley subroga la Ley 31 de 18 junio de 2010 y adiciona el artículo 2-A a la Ley …</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="124"></div></div>
+      </div>
+      <div class="articulo" id="art-125" data-artnum="125">
+        <button class="art-header" onclick="toggleArt(this)">
+          <span class="art-num" style="color:#1E4D6B">Art. 125</span>
+          <span class="art-titulo">Esta Ley comenzará a regir desde su promulgación.…</span>
+          <span class="art-toggle">▼</span>
+        </button>
+        <div class="art-body"><div class="art-text" data-art="125"></div></div>
+      </div>
+    </div>
+  </div></div>
+  </section>
+
+</main>
+
+<nav class="bottom-nav" id="bottomNav">
+  <button class="bottom-nav-item active" id="bn-inicio" onclick="showPage('inicio');setActiveNav('bn-inicio')">
+    <span class="bn-icon">🏠</span><span>Inicio</span>
+  </button>
+  <button class="bottom-nav-item" id="bn-indice" onclick="showPage('indice');setActiveNav('bn-indice')">
+    <span class="bn-icon">📋</span><span>Índice</span>
+  </button>
+  <button class="bottom-nav-item" id="bn-contenido" onclick="showPage('contenido');setActiveNav('bn-contenido')">
+    <span class="bn-icon">📖</span><span>Artículos</span>
+  </button>
+  <button class="bottom-nav-item" id="bn-search" onclick="openMobileSearch()">
+    <span class="bn-icon">🔍</span><span>Buscar</span>
+  </button>
+  <button class="bottom-nav-item" id="bn-goto" onclick="openMobileGoto()">
+    <span class="bn-icon">#</span><span>Ir a Art.</span>
+  </button>
+</nav>
+</div>
+
+<script>
+const ARTS={1:{t:"T\u00cdTULO I \u2014 Disposiciones Generales",c:"",x:"<p>Se crea el R\u00e9gimen de Propiedad Horizontal como un tipo especial de propiedad, con independencia funcional, en donde coexisten bienes privados con bienes comunes, con salida apropiada a la v\u00eda p\u00fablica.</p>"},2:{t:"T\u00cdTULO I \u2014 Disposiciones Generales",c:"",x:"<p>El R\u00e9gimen de Propiedad Horizontal tiene como principios rectores asegurar el mantenimiento, salubridad, seguridad y conservaci\u00f3n de los bienes privados y bienes comunes que coexisten dentro de la propiedad horizontal, promoviendo el bienestar de todos sus propietarios. Los principios rectores son entre otros: 1. Convivencia pac\u00edfica y solidaridad social. 2. Derecho al debido proceso. 3. Derecho a petici\u00f3n. 4. Principio de confidencialidad. 5. Respeto a las decisiones. 6. Respeto de la dignidad humana. 7. Sostenibilidad y funci\u00f3n social.</p>"},3:{t:"T\u00cdTULO I \u2014 Disposiciones Generales",c:"",x:"<p>Podr\u00e1n pertenecer al R\u00e9gimen de Propiedad Horizontal: las diversas unidades inmobiliarias cuando sean independientes y tengan salida a la v\u00eda p\u00fablica directamente o por un pasaje com\u00fan; las distintas unidades inmobiliarias sobre terreno com\u00fan; las edificaciones o proyectos construidos sobre terrenos de propiedad de una o m\u00e1s personas; las lotificaciones, parcelaciones y urbanizaciones con lotes servidos; las construcciones o edificios destinados a estacionamientos, bodegas, cementerios o cualquier actividad comercial; los proyectos o desarrollos sobre finca ya incorporada al R\u00e9gimen; cualquier otro tipo de unidad inmobiliaria susceptible de aprovechamiento independiente.</p>"},4:{t:"T\u00cdTULO I \u2014 Disposiciones Generales",c:"",x:"<p>Las unidades inmobiliarias a que se refiere el art\u00edculo anterior podr\u00e1n enajenarse, gravarse o ser objeto de toda clase de actos jur\u00eddicos entre vivos o por causa de muerte. El Reglamento de Copropiedad no podr\u00e1 establecer disposiciones que limiten tales derechos.</p>"},5:{t:"T\u00cdTULO I \u2014 Disposiciones Generales",c:"",x:"<p>Cuando un bien inmueble se incorpore al R\u00e9gimen de Propiedad Horizontal y estuviera hipotecado, se requerir\u00e1 el consentimiento del acreedor hipotecario. Si se trata de una edificaci\u00f3n construida sobre un bien inmueble ajeno, se exigir\u00e1 la anuencia del propietario y se establecer\u00e1n las condiciones entre el propietario del bien inmueble y las mejoras con motivo de la incorporaci\u00f3n a dicho R\u00e9gimen.</p>"},6:{t:"T\u00cdTULO I \u2014 Disposiciones Generales",c:"",x:"<p>Para los efectos de esta Ley, los siguientes t\u00e9rminos se entender\u00e1n as\u00ed: 1. Acreedor hipotecario o fiduciario. 2. Administraci\u00f3n. 3. Administrador de la propiedad horizontal. 4. Asamblea de Propietarios. 5. Azotea. 6. Bienes anejos. 7. Bienes comunes. 8. Bienes comunes de uso exclusivo. 9. Bienes privados. 10. Bienes suntuosos. 11. Bioseguridad. 12. Coeficiente de participaci\u00f3n. 13. Comit\u00e9 de Apoyo. 14. Comit\u00e9 de Apoyo de Administraci\u00f3n. 15. Comit\u00e9 de Componente. 16. Comit\u00e9 de Transici\u00f3n. 17. Componentes. 18. Conjunto inmobiliario. 19. Cuotas de gastos comunes. 20. Desembolso extraordinario. 21. Edificaci\u00f3n. 22. Estacionamiento. 23. Fachada. 24. Fondo para Imprevistos. 25. Inmueble. 26. Lotificaci\u00f3n. 27. Morosidad. 28. Parcelaci\u00f3n. 29. Paz y salvo. 30. Penthouse. 31. Pisos. 32. Poder de votaci\u00f3n. 33. Proindivisi\u00f3n. 34. Promotor. 35. Propiedad horizontal derivada. 36. Propiedad horizontal originaria. 37. Propiedad horizontal tur\u00edstica. 38. Propietario. 39. Propietario al d\u00eda. 40. Propietario inicial. 41. Proyecto de inter\u00e9s social. 42. Quorum. 43. Recargo. 44. Reglamento de Copropiedad. 45. Reglamento de Uso. 46. Reserva. 47. Reserva de construcci\u00f3n. 48. Reserva sobre bienes comunes. 49. Reuni\u00f3n de la Asamblea de Propietarios. 50. Segunda convocatoria. 51. Tiempo compartido. 52. T\u00edtulo constitutivo. 53. Unidad inmobiliaria. 54. Urbanizaci\u00f3n. 55. Usos. 56. Votaci\u00f3n.</p>"},7:{t:"T\u00cdTULO II \u2014 Comunidad de Bienes",c:"",x:"<p>Cuando se trate de un edificio o unidades inmobiliarias edificadas sobre una finca que pertenezca a varios propietarios, cualquiera de estos podr\u00e1 solicitar su divisi\u00f3n mediante la adjudicaci\u00f3n de unidades comunes para acogerse al R\u00e9gimen de Propiedad Horizontal. Los propietarios contar\u00e1n con la alternativa de la v\u00eda del proceso arbitral. Si los propietarios no se pusieran de acuerdo, cualquiera podr\u00e1 recurrir por la v\u00eda judicial mediante un proceso sumario.</p>"},8:{t:"T\u00cdTULO II \u2014 Comunidad de Bienes",c:"",x:"<p>En los casos del art\u00edculo anterior, el juez conceder\u00e1 a los peritos el t\u00e9rmino de un mes, prorrogable por un mes adicional, para presentar un proyecto de divisi\u00f3n del bien y un proyecto sobre el Reglamento de Copropiedad. Una vez rendido el informe de los peritos, las partes tendr\u00e1n un t\u00e9rmino de diez d\u00edas para hacer objeciones.</p>"},9:{t:"T\u00cdTULO II \u2014 Comunidad de Bienes",c:"",x:"<p>Para los efectos de los art\u00edculos 7 y 8, cuando la unidad inmobiliaria tenga un gravamen, se necesitar\u00e1 la aprobaci\u00f3n del acreedor para efectuar la divisi\u00f3n.</p>"},10:{t:"T\u00cdTULO III \u2014 Valores Inmobiliarios",c:"",x:"<p>El valor de cada unidad inmobiliaria se fijar\u00e1 por cualquiera de los siguientes procedimientos: 1. Por decisi\u00f3n del promotor. 2. Por acuerdo del 66% de la totalidad de las unidades inmobiliarias. 3. Por decisi\u00f3n judicial o arbitral. 4. Por aval\u00fao catastral cuando no se haya fijado por alguno de los m\u00e9todos anteriores.</p>"},11:{t:"T\u00cdTULO III \u2014 Valores Inmobiliarios",c:"",x:"<p>Los aval\u00faos ordenados por las leyes tributarias y de valorizaci\u00f3n deber\u00e1n hacerse por separado para cada una de las unidades inmobiliarias que existan en el inmueble e incluir\u00e1n la parte proporcional de los bienes comunes.</p>"},12:{t:"T\u00cdTULO IV \u2014 Unidades Inmobiliarias y Bienes Anejos",c:"",x:"<p>Cada propietario solo podr\u00e1 vender a otro propietario de la misma propiedad horizontal los bienes anejos de su unidad inmobiliaria, a trav\u00e9s de escritura p\u00fablica debidamente inscrita en el Registro P\u00fablico, que no sean necesarios para su funcionamiento, uso y disfrute. A estos bienes anejos no se les podr\u00e1 variar el uso para el cual fueron destinados.</p>"},13:{t:"T\u00cdTULO IV \u2014 Unidades Inmobiliarias y Bienes Anejos",c:"",x:"<p>Las unidades inmobiliarias podr\u00e1n ser modificadas para formar otras, para reducir o aumentar su \u00e1rea, siempre que se cumpla con los requisitos: que la modificaci\u00f3n no afecte la estabilidad; que cumpla con las normas de desarrollo urbano; aprobaci\u00f3n del 66% de la Asamblea de Propietarios; y que se obtengan los permisos de las autoridades competentes.</p>"},14:{t:"T\u00cdTULO IV \u2014 Unidades Inmobiliarias y Bienes Anejos",c:"",x:"<p>En las operaciones mercantiles con garant\u00eda de bienes sujetos al R\u00e9gimen de Propiedad Horizontal, el deudor y el acreedor o fiduciario podr\u00e1n convenir que los derechos que esta Ley confiere al propietario puedan ser ejercidos por estos.</p>"},15:{t:"T\u00cdTULO IV \u2014 Unidades Inmobiliarias y Bienes Anejos",c:"",x:"<p>Una vez incorporado al R\u00e9gimen de Propiedad Horizontal, el propietario inicial o la Asamblea de Propietarios estar\u00e1n obligados a asignar el estacionamiento y los bienes anejos que correspondan a cada unidad inmobiliaria. Se proh\u00edbe la venta, traspaso, donaci\u00f3n, permuta o cualquier acto de disposici\u00f3n de los estacionamientos y los bienes anejos en ciertos supuestos.</p>"},16:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>Son bienes comunes esenciales y del dominio inalienable e indivisible aquellos que cumplan con un beneficio indispensable para todos los propietarios del inmueble, los cuales incluyen: el \u00e1rea de terreno; los bienes necesarios para la existencia, seguridad, salubridad, conservaci\u00f3n; los que permiten el uso y goce de una unidad inmobiliaria; las \u00e1reas e instalaciones de servicios centrales; los cimientos, columnas, vigas, losas, azotea y otras partes estructurales.</p>"},17:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>Son bienes comunes los s\u00f3tanos, ascensores, incineradores, buzones, \u00e1reas de estacionamiento de visitas; las \u00e1reas destinadas al uso o alojamiento de empleados; los artefactos, \u00e1reas e instalaciones para el beneficio com\u00fan; todas las amenidades que brinden un beneficio com\u00fan.</p>"},18:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>Pertenecer\u00e1n en comunidad \u00fanicamente para los propietarios de unidades inmobiliarias de un mismo piso, lo que se destine al uso exclusivo de los ocupantes de dicho piso, salvo los bienes comunes esenciales para todos los propietarios.</p>"},19:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>La Asamblea de Propietarios podr\u00e1 aprobar por el 51% o m\u00e1s de la totalidad de las unidades inmobiliarias que algunos bienes comunes tengan el car\u00e1cter de exclusivos bajo las condiciones que establezcan, para uno o m\u00e1s propietarios.</p>"},20:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>La Asamblea de Propietarios, en decisi\u00f3n tomada por el 51% o m\u00e1s de la totalidad de las unidades inmobiliarias, podr\u00e1 aprobar la adquisici\u00f3n de un bien ofrecido por su due\u00f1o para ser utilizado como bien com\u00fan.</p>"},21:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>Salvo la obligaci\u00f3n de pagar las cuotas de gastos comunes, que son de car\u00e1cter real, los deberes y derechos de todo propietario sobre los bienes comunes son inseparables del dominio, uso y goce de su respectiva unidad inmobiliaria.</p>"},22:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>El coeficiente de participaci\u00f3n sobre los bienes comunes ser\u00e1 proporcional al valor de la unidad inmobiliaria de su dominio y deber\u00e1 fijarse en t\u00e9rminos de porcentaje del valor total del inmueble. Las mejoras y menoscabos de cada unidad inmobiliaria no alteran la cuota atribuida.</p>"},23:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>Las cuotas de gastos comunes de las unidades inmobiliarias deber\u00e1n ser canceladas mensualmente y generar\u00e1n recargo siempre que haya vencido la obligaci\u00f3n de pago.</p>"},24:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>Los propietarios de unidades inmobiliarias con elementos compartidos costear\u00e1n por partes iguales los gastos de mantenimiento y reparaci\u00f3n de los elementos de los entrepisos y de las paredes que les sean comunes.</p>"},25:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>Cada propietario deber\u00e1 contribuir con los gastos necesarios para la administraci\u00f3n, conservaci\u00f3n, mantenimiento, operaci\u00f3n, reparaci\u00f3n y modificaci\u00f3n de los bienes comunes, incluyendo la contrataci\u00f3n de los seguros.</p>"},26:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>La cuota de gastos comunes podr\u00e1 ser fijada en forma distinta si as\u00ed lo acuerda la Asamblea de Propietarios, mediante el voto afirmativo del 66% de la totalidad de las unidades inmobiliarias.</p>"},27:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>A partir de la expedici\u00f3n del permiso de ocupaci\u00f3n de la unidad inmobiliaria, el promotor y/o propietario inicial deber\u00e1 sufragar la totalidad de las cuotas de gastos comunes hasta que sea debidamente inscrita en el Registro P\u00fablico la venta.</p>"},28:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>Cuando alguno de los propietarios incumpla su obligaci\u00f3n de pago de las cuotas de gastos comunes, se aplicar\u00e1n diversas medidas: recargo, anuncio en lugar visible, suspensi\u00f3n de \u00e1reas comunes recreativas, restricci\u00f3n de servicios, proceso ejecutivo, e informaci\u00f3n a instituciones acreedoras.</p>"},29:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>Quien ocupe, a cualquier t\u00edtulo, alguna unidad inmobiliaria ser\u00e1 responsable de los da\u00f1os y perjuicios causados a los bienes comunes o privativos y a terceros por dolo, culpa o negligencia.</p>"},30:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>Cada propietario utilizar\u00e1 su unidad inmobiliaria de acuerdo con su destino previsto en las leyes y en el Reglamento de Copropiedad.</p>"},31:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>Cada propietario utilizar\u00e1 los bienes comunes seg\u00fan su destino y de acuerdo con el Reglamento de Copropiedad y Reglamento de Uso.</p>"},32:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>Se proh\u00edbe a los propietarios de las unidades inmobiliarias y a quienes las ocupen a cualquier t\u00edtulo: destinar las unidades a usos contrarios a la ley; perturbar la tranquilidad; introducir sustancias peligrosas; realizar obras sin consentimiento; hacer obras que perjudiquen la solidez; modificar fachadas sin autorizaci\u00f3n; colocar letreros sin consentimiento; contratar personal no id\u00f3neo; ejecutar otros actos que proh\u00edbe el Reglamento. (Primer p\u00e1rrafo reformado mediante Ley 467 de 24 de abril de 2025).</p>"},33:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>La infracci\u00f3n a cualquiera de las prohibiciones contenidas en el art\u00edculo anterior dar\u00e1 lugar a acciones correctivas: primer llamado de atenci\u00f3n, imposici\u00f3n de multas, y denuncia ante autoridades.</p>"},34:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>Quien ocupe a cualquier t\u00edtulo alguna unidad inmobiliaria tendr\u00e1 la obligaci\u00f3n de permitir el tr\u00e1nsito y trabajo de personas que deban ingresar para inspeccionar o efectuar arreglos.</p>"},35:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>La modificaci\u00f3n de cuotas de gastos comunes ordinaria o la aprobaci\u00f3n de cuotas extraordinarias requerir\u00e1 de la aprobaci\u00f3n de la Asamblea de Propietarios mediante el voto favorable de, por lo menos, el 51% de la totalidad de las unidades inmobiliarias que se encuentren al d\u00eda.</p>"},36:{t:"T\u00cdTULO V \u2014 Bienes Comunes y Privativos",c:"",x:"<p>Cuando se trate de mejoras adicionales a las ya existentes al momento de incorporarse la propiedad al R\u00e9gimen de Propiedad Horizontal, para su aprobaci\u00f3n se requerir\u00e1 del voto favorable del 51% de la totalidad de las unidades inmobiliarias.</p>"},37:{t:"T\u00cdTULO VI \u2014 Constituci\u00f3n del R\u00e9gimen de Propiedad Horizontal",c:"",x:"<p>Se faculta al Ministerio de Vivienda y Ordenamiento Territorial para establecer las normas de dise\u00f1o relativas al R\u00e9gimen de Propiedad Horizontal, as\u00ed como para reglamentar los requisitos y procedimientos de tr\u00e1mite para la incorporaci\u00f3n.</p>"},38:{t:"T\u00cdTULO VI \u2014 Constituci\u00f3n del R\u00e9gimen de Propiedad Horizontal",c:"",x:"<p>El R\u00e9gimen de Propiedad Horizontal se constituye en tres fases: la aprobaci\u00f3n del Ministerio de Vivienda y Ordenamiento Territorial; la protocolizaci\u00f3n ante notario; y la inscripci\u00f3n de la escritura p\u00fablica en el Registro P\u00fablico.</p>"},39:{t:"T\u00cdTULO VI \u2014 Constituci\u00f3n del R\u00e9gimen de Propiedad Horizontal",c:"",x:"<p>El t\u00edtulo constitutivo mediante el cual se incorpore un inmueble al R\u00e9gimen de Propiedad Horizontal contendr\u00e1 para su inscripci\u00f3n una serie de requisitos incluyendo: descripci\u00f3n del terreno y mejoras; valor del proyecto; nombre del proyecto; determinaci\u00f3n de \u00e1reas comunes y privativas; determinaci\u00f3n de usos; identificaci\u00f3n de cada unidad inmobiliaria; detalles de las unidades; resoluci\u00f3n y Reglamento de Copropiedad; especificaciones adicionales seg\u00fan el tipo de proyecto.</p>"},40:{t:"T\u00cdTULO VI \u2014 Constituci\u00f3n del R\u00e9gimen de Propiedad Horizontal",c:"",x:"<p>Todas las operaciones sobre inmuebles sujetos al R\u00e9gimen de Propiedad Horizontal se inscribir\u00e1n en el Registro P\u00fablico de Panam\u00e1.</p>"},41:{t:"T\u00cdTULO VI \u2014 Constituci\u00f3n del R\u00e9gimen de Propiedad Horizontal",c:"",x:"<p>Cuando se trate de la inscripci\u00f3n de la segregaci\u00f3n de una unidad inmobiliaria, ser\u00e1 necesario acreditar los linderos, medidas lineales y superficie, as\u00ed como la identificaci\u00f3n de la unidad, ubicaci\u00f3n en la planta, su valor y coeficiente de participaci\u00f3n.</p>"},42:{t:"T\u00cdTULO VI \u2014 Constituci\u00f3n del R\u00e9gimen de Propiedad Horizontal",c:"",x:"<p>Los proyectos destinados al R\u00e9gimen de Propiedad Horizontal cuyo desarrollo sea por etapas podr\u00e1n incorporarse a medida que las respectivas unidades inmobiliarias se vayan construyendo si se cumplen ciertos requisitos.</p>"},43:{t:"T\u00cdTULO VI \u2014 Constituci\u00f3n del R\u00e9gimen de Propiedad Horizontal",c:"",x:"<p>En caso de que se solicite la incorporaci\u00f3n al R\u00e9gimen de Propiedad Horizontal de una edificaci\u00f3n cuya construcci\u00f3n data de m\u00e1s de veinte a\u00f1os y que estuviera ocupada por arrendatarios, deber\u00e1n cumplirse requisitos espec\u00edficos.</p>"},44:{t:"T\u00cdTULO VI \u2014 Constituci\u00f3n del R\u00e9gimen de Propiedad Horizontal",c:"",x:"<p>El promotor o propietario pagar\u00e1 al Ministerio de Vivienda y Ordenamiento Territorial una suma equivalente a dos d\u00e9cimos del 1% del valor de construcci\u00f3n declarado en concepto de tramitaci\u00f3n de solicitud.</p>"},45:{t:"T\u00cdTULO VI \u2014 Constituci\u00f3n del R\u00e9gimen de Propiedad Horizontal",c:"",x:"<p>En los casos de proyectos de lotificaci\u00f3n, parcelaci\u00f3n o urbanizaci\u00f3n con lotes servidos, cuyas mejoras ser\u00e1n edificadas posteriormente, el pago por los derechos de tramitaci\u00f3n se har\u00e1 en dos fases.</p>"},46:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO I \u2014 Fondo para Imprevistos",x:"<p>Se crea obligatoriamente el Fondo para Imprevistos para atender y financiar las obligaciones, obras o expensas que se presenten de forma imprevista no contempladas en el presupuesto vigente de la propiedad horizontal.</p>"},47:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO I \u2014 Fondo para Imprevistos",x:"<p>El Fondo para Imprevistos corresponde como m\u00ednimo al 1% de la totalidad de los ingresos y las cuotas de gastos comunes anuales recaudadas.</p>"},48:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO I \u2014 Fondo para Imprevistos",x:"<p>De requerir el uso del Fondo para Imprevistos, la Junta Directiva deber\u00e1 justificar su necesidad y monto a utilizar ante la Asamblea de Propietarios, la cual decidir\u00e1 mediante el voto favorable de, por lo menos, el 51% de la totalidad de las unidades inmobiliarias.</p>"},49:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO II \u2014 Reglamento de Copropiedad",x:"<p>El Reglamento de Copropiedad deber\u00e1 contener una serie de elementos m\u00ednimos incluyendo: nombre de la propiedad horizontal; determinaci\u00f3n del uso; prohibici\u00f3n o permisi\u00f3n de animales; forma de convocatoria; cantidad de propietarios necesarios para reuniones; facultades y obligaciones de la Junta Directiva; mecanismo de designaci\u00f3n del administrador; tabla de valores y porcentajes; descripci\u00f3n de reservas del promotor; plan de manejo de desechos.</p>"},50:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO II \u2014 Reglamento de Copropiedad",x:"<p>Para modificar el Reglamento de Copropiedad se requiere un acuerdo tomado en Asamblea de Propietarios por el voto del 66% de la totalidad de las unidades inmobiliarias y que, a su vez, representen no menos del 75% del valor de la propiedad horizontal.</p>"},51:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO II \u2014 Reglamento de Copropiedad",x:"<p>En la reuni\u00f3n de la Asamblea de Propietarios, cada unidad inmobiliaria inscrita en el Registro P\u00fablico tendr\u00e1 derecho a un voto, el cual lo ejercer\u00e1 su propietario; no obstante, est\u00e1n inhabilitados para ejercer este derecho las unidades inmobiliarias que no se encuentren al d\u00eda en el pago de las cuotas de gastos comunes.</p>"},52:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO III \u2014 Promotor",x:"<p>El promotor y/o propietario inicial ser\u00e1 responsable de cumplir las disposiciones referentes a la operaci\u00f3n, conservaci\u00f3n y funcionamiento del proyecto.</p>"},53:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO III \u2014 Promotor",x:"<p>El promotor deber\u00e1 entregar a la Junta Directiva transitoria los bienes y \u00e1reas comunes de la propiedad horizontal, la cual los custodiar\u00e1 como buen padre de familia.</p>"},54:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO III \u2014 Promotor",x:"<p>El promotor debe entregar a la Junta Directiva transitoria una serie de documentos m\u00ednimos incluyendo: planos aprobados; escritura p\u00fablica; Reglamento de Uso; actas de entrega; permisos de construcci\u00f3n; p\u00f3lizas de seguros; plano de estacionamientos; facturas y garant\u00edas de equipos; registros y actas de reuniones.</p>"},55:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO III \u2014 Promotor",x:"<p>El promotor tendr\u00e1, como m\u00ednimo, los siguientes derechos: establecer reservas; establecer nombre y unidades; definir usos; elaborar el Reglamento de Copropiedad; designar la primera Junta Directiva; celebrar contratos; presentar documentaci\u00f3n; acceso para futuras etapas.</p>"},56:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO IV \u2014 Propietarios",x:"<p>Los propietarios ser\u00e1n responsables en lo referente a la participaci\u00f3n, conservaci\u00f3n y mantenimiento de la propiedad horizontal, teniendo obligaciones m\u00ednimas que incluyen: asistir a reuniones; pagar cuotas; informar irregularidades; utilizar \u00e1reas seg\u00fan su destino; cumplir y hacer cumplir disposiciones; mantener unidad en buen estado; responder por da\u00f1os; permitir acceso a autoridades; usar personal id\u00f3neo; dirigirse con respeto.</p>"},57:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO IV \u2014 Propietarios",x:"<p>El propietario tendr\u00e1, como m\u00ednimo, los siguientes derechos: recibir informaci\u00f3n; presentar peticiones; uso y goce de \u00e1reas comunes; recibir copia de reglamentos; participar con voz y voto; recibir copia de actas; recibir paz y salvo; trato digno; formar parte de Junta Directiva; confidencialidad.</p>"},58:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>La Asamblea de Propietarios es el m\u00e1ximo organismo dentro del R\u00e9gimen de Propiedad Horizontal y estar\u00e1 formada por la totalidad de los propietarios. Obtendr\u00e1 su personer\u00eda jur\u00eddica al inscribirse el Reglamento de Copropiedad en el Registro P\u00fablico.</p>"},59:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>El representante legal de la Asamblea de Propietarios ser\u00e1 el presidente y, como tal, representar\u00e1 a la Asamblea en toda clase de procesos y actos relativos al inmueble.</p>"},60:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>La administraci\u00f3n, mantenimiento y conservaci\u00f3n de los bienes comunes de la propiedad horizontal corresponder\u00e1 a la Asamblea de Propietarios y ser\u00e1 ejecutada de manera coordinada por la Junta Directiva y el administrador.</p>"},61:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>La Asamblea de Propietarios se reunir\u00e1 en sesi\u00f3n ordinaria obligatoriamente, por lo menos, una vez al a\u00f1o.</p>"},62:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>La convocatoria a Asamblea ordinaria se har\u00e1 con no menos de diez ni m\u00e1s de veinte d\u00edas calendario previos a la celebraci\u00f3n de la reuni\u00f3n.</p>"},63:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>La reuni\u00f3n ordinaria de la Asamblea de Propietarios podr\u00e1 ser convocada por derecho propio por el 20% de la totalidad de los propietarios que se encuentren al d\u00eda.</p>"},64:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>La Asamblea de Propietarios se podr\u00e1 reunir de forma extraordinaria cuando las necesidades sean imprevistas o de urgencia.</p>"},65:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>La convocatoria extraordinaria de la Asamblea de Propietarios se realizar\u00e1 con no menos de tres d\u00edas ni m\u00e1s de cinco d\u00edas calendario previos a la celebraci\u00f3n de la reuni\u00f3n.</p>"},66:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>Las convocatorias a las reuniones de Asamblea ordinaria o extraordinaria deben contener requisitos m\u00ednimos: fecha de convocatoria; clase de reuni\u00f3n; fecha y hora; lugar o medio tecnol\u00f3gico; agenda; nombre y cargo del convocante.</p>"},67:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>La reuni\u00f3n de la Asamblea de Propietarios se considera legalmente constituida con el quorum de m\u00e1s de la mitad de los propietarios de manera presencial o medios tecnol\u00f3gicos o mixta.</p>"},68:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>En todas las reuniones de la Asamblea de Propietarios, los propietarios podr\u00e1n hacerse representar por un mandatario, que no necesariamente deber\u00e1 ser propietario.</p>"},69:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>La Asamblea de Propietarios ser\u00e1 presidida por el presidente, a falta de este, por el vicepresidente, y as\u00ed sucesivamente.</p>"},70:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>Las decisiones de la Asamblea de Propietarios para que surtan efecto legal y sean de obligatorio cumplimiento deber\u00e1n ser aprobadas de acuerdo con los porcentajes establecidos en la presente Ley.</p>"},71:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>Las decisiones de la Asamblea de Propietarios se har\u00e1n constar en un acta que expresar\u00e1, como m\u00ednimo: n\u00famero del acta; nombre de la propiedad horizontal; lugar y fecha; lista de propietarios; quorum; qui\u00e9nes fungieron como presidente y secretario; asuntos tratados; propuestas y votaciones; firmas.</p>"},72:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO V \u2014 Asamblea de Propietarios",x:"<p>El acta de la Asamblea de Propietarios en la cual se elija la Junta Directiva o el administrador deber\u00e1 presentarse para su inscripci\u00f3n en el Registro P\u00fablico.</p>"},73:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VI \u2014 Junta Directiva",x:"<p>Para los efectos de la Asamblea de Propietarios y de administraci\u00f3n del bien sujeto al R\u00e9gimen de Propiedad Horizontal, se elegir\u00e1 una Junta Directiva que constar\u00e1, como m\u00ednimo, de tres miembros.</p>"},74:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VI \u2014 Junta Directiva",x:"<p>Los miembros de la Junta Directiva ser\u00e1n de libre nombramiento y remoci\u00f3n por parte de la Asamblea de Propietarios, mediante el voto favorable de, por lo menos, el 51% de la totalidad de las unidades inmobiliarias.</p>"},75:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VI \u2014 Junta Directiva",x:"<p>Solo podr\u00e1n ser miembros de la Junta Directiva las personas que: sean propietarias; preferiblemente residan en la propiedad horizontal; est\u00e9n al d\u00eda en el pago; no est\u00e9n inhabilitadas; sean elegidas por la Asamblea de Propietarios.</p>"},76:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VI \u2014 Junta Directiva",x:"<p>Los directores electos por la Asamblea de Propietarios podr\u00e1n recibir los beneficios que esta decida otorgar por el desempe\u00f1o de sus cargos.</p>"},77:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VI \u2014 Junta Directiva",x:"<p>El miembro de la Junta Directiva que decida renunciar a su cargo antes de finalizar su periodo deber\u00e1 presentar su renuncia por escrito.</p>"},78:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VI \u2014 Junta Directiva",x:"<p>Los miembros de la Junta Directiva podr\u00e1n renunciar, por cualquier motivo, a los cargos a los que fueron electos. Las vacantes ser\u00e1n cubiertas por el resto de los directores en ejercicio.</p>"},79:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VI \u2014 Junta Directiva",x:"<p>Los nombramientos de los miembros de la Junta Directiva se protocolizar\u00e1n e inscribir\u00e1n en el Registro P\u00fablico.</p>"},80:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VI \u2014 Junta Directiva",x:"<p>La Junta Directiva ser\u00e1 responsable de cumplir y hacer cumplir las decisiones de la Asamblea de Propietarios y tendr\u00e1 diversas funciones y facultades.</p>"},81:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VI \u2014 Junta Directiva",x:"<p>Los fondos provenientes de la administraci\u00f3n deber\u00e1n ser depositados en el banco o bancos que determine la Junta Directiva.</p>"},82:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VI \u2014 Junta Directiva",x:"<p>El porcentaje de las cuotas de gastos comunes destinado para el Fondo para Imprevistos deber\u00e1 ser depositado en cuenta aparte.</p>"},83:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VI \u2014 Junta Directiva",x:"<p>Los miembros de la Junta Directiva no ser\u00e1n responsables personal, civil, administrativa o penalmente por las actuaciones que ejecuten en el ejercicio de su cargo.</p>"},84:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VI \u2014 Junta Directiva",x:"<p>La Junta Directiva deber\u00e1 reunirse en sesi\u00f3n ordinaria, en la fecha se\u00f1alada en el Reglamento de Copropiedad.</p>"},85:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VI \u2014 Junta Directiva",x:"<p>Las convocatorias para las reuniones de la Junta Directiva las efectuar\u00e1 el presidente, en un t\u00e9rmino no menor de cinco d\u00edas ni mayor de quince d\u00edas calendario antes de la fecha de la reuni\u00f3n.</p>"},86:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VI \u2014 Junta Directiva",x:"<p>Para constituir quorum en una reuni\u00f3n de Junta Directiva, se requerir\u00e1, por lo menos, de la asistencia personal o por cualquier medio tecnol\u00f3gico de m\u00e1s de la mitad de todos los directores.</p>"},87:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VII \u2014 Funciones de los Directores",x:"<p>Son funciones del presidente: ostentar la representaci\u00f3n legal; presidir reuniones; convocar reuniones de Junta Directiva y Asamblea; extender certificaciones de paz y salvo; ejercer las dem\u00e1s funciones se\u00f1aladas.</p>"},88:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VII \u2014 Funciones de los Directores",x:"<p>Son funciones del secretario: ejercer representaci\u00f3n legal en ausencia del presidente; presidir reuniones en ausencia del presidente; actuar como secretario; llevar libros o registros de actas; convocar reuniones; extender certificaciones.</p>"},89:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VII \u2014 Funciones de los Directores",x:"<p>Son funciones del tesorero: ejercer representaci\u00f3n legal en ausencia del presidente y secretario; presidir reuniones en ausencia de los anteriores; velar por el buen manejo de los dineros; llevar control del Fondo para Imprevistos; presentar balances mensuales; convocar reuniones; extender certificaciones.</p>"},90:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VII \u2014 Funciones de los Directores",x:"<p>Son funciones del vocal: ejercer representaci\u00f3n legal a falta de los dem\u00e1s miembros; presidir sesiones a falta de todos los dem\u00e1s; convocar reuniones; ejercer funciones de cualquier dignatario ausente.</p>"},91:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VIII \u2014 Administrador",x:"<p>El administrador ser\u00e1 nombrado por la Junta Directiva mediante el voto favorable de la mayor\u00eda simple de los directores.</p>"},92:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VIII \u2014 Administrador",x:"<p>Quien desempe\u00f1e el cargo de administrador de una propiedad horizontal deber\u00e1 tener perfil gerencial, con conocimientos en recursos humanos, contabilidad y del manejo de la legislaci\u00f3n.</p>"},93:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VIII \u2014 Administrador",x:"<p>El administrador tendr\u00e1 diversas obligaciones incluyendo: velar por el cumplimiento de las disposiciones; ejecutar labores ordinarias; mantener el orden; exigir cumplimiento de obligaciones; representar a la Asamblea; acordar contratos; celebrar contratos aprobados; nombrar y remover empleados; recaudar cuotas; notificar morosidad; depositar fondos; entregar documentos al terminar.</p>"},94:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VIII \u2014 Administrador",x:"<p>El administrador debe elaborar el proyecto de presupuesto y el informe de ingresos y egresos para ser considerados en la reuni\u00f3n ordinaria anual de la Asamblea de Propietarios.</p>"},95:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VIII \u2014 Administrador",x:"<p>El proyecto de presupuesto y el informe de ingresos y egresos deber\u00e1n ser enviados obligatoriamente a cada uno de los propietarios con no menos de quince d\u00edas calendario de antelaci\u00f3n.</p>"},96:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VIII \u2014 Administrador",x:"<p>El administrador tendr\u00e1 la responsabilidad de conocer el alcance de sus funciones y obligaciones y no podr\u00e1 extralimitarse. No ser\u00e1 responsable personal, civil, administrativa o penalmente por las actuaciones que ejecute en el ejercicio de su cargo.</p>"},97:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO VIII \u2014 Administrador",x:"<p>El administrador y el personal a su cargo deber\u00e1n respetar los derechos que les asistan a los propietarios.</p>"},98:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO IX \u2014 Comit\u00e9s",x:"<p>En las propiedades horizontales multiusos, para simplificar su administraci\u00f3n se permitir\u00e1 la creaci\u00f3n de los comit\u00e9s de componentes para coordinar las necesidades internas de sus \u00e1reas comunes.</p>"},99:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO IX \u2014 Comit\u00e9s",x:"<p>El Comit\u00e9 de Componente estar\u00e1 conformado, como m\u00ednimo, por un coordinador y un secretario.</p>"},100:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO IX \u2014 Comit\u00e9s",x:"<p>El Reglamento de Copropiedad podr\u00e1 se\u00f1alar un n\u00famero mayor de propietarios que podr\u00e1n conformar estos comit\u00e9s.</p>"},101:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO IX \u2014 Comit\u00e9s",x:"<p>El Comit\u00e9 de Componente tendr\u00e1 las funciones que se dispongan en el Reglamento de Copropiedad, adem\u00e1s de representar a su componente, aconsejar al administrador, analizar cuentas, revisar presupuesto, sugerir reformas, verificar cumplimiento, recomendar contrataciones, y otras funciones.</p>"},102:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO IX \u2014 Comit\u00e9s",x:"<p>El Comit\u00e9 de Transici\u00f3n ser\u00e1 un conjunto conformado por los primeros propietarios del inmueble en un n\u00famero no mayor de cinco ni menor de tres.</p>"},103:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO X \u2014 Proindivisi\u00f3n",x:"<p>La proindivisi\u00f3n que establece esta Ley es forzosa, y los propietarios no podr\u00e1n acordar que se le ponga fin ni obtener la divisi\u00f3n judicial, excepto en casos espec\u00edficos.</p>"},104:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO X \u2014 Proindivisi\u00f3n",x:"<p>En caso de haber sido destruida parcialmente la edificaci\u00f3n, si esta disminuyera su valor en por lo menos 66% y la Asamblea de Propietarios decide su reconstrucci\u00f3n, todos los propietarios deber\u00e1n contribuir.</p>"},105:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO X \u2014 Proindivisi\u00f3n",x:"<p>Siempre que la edificaci\u00f3n amenace ruina, la Asamblea de Propietarios podr\u00e1 disponer su reconstrucci\u00f3n o su demolici\u00f3n, mediante la votaci\u00f3n favorable de no menos del 75% de todas las unidades inmobiliarias.</p>"},106:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO X \u2014 Proindivisi\u00f3n",x:"<p>Cuando por ocurrir siniestro se requiera cobrar el valor de la indemnizaci\u00f3n del seguro, este quedar\u00e1 afecto en primer lugar a la reconstrucci\u00f3n de la edificaci\u00f3n.</p>"},107:{t:"T\u00cdTULO VII \u2014 Administraci\u00f3n de la Propiedad Horizontal",c:"CAP\u00cdTULO X \u2014 Proindivisi\u00f3n",x:"<p>La propiedad horizontal gravada con garant\u00eda hipotecaria, que es adquirida con posterioridad por varios propietarios, podr\u00e1 ser dividida entre las diferentes unidades inmobiliarias.</p>"},108:{t:"T\u00cdTULO VIII \u2014 Direcci\u00f3n de Propiedad Horizontal",c:"",x:"<p>El Ministerio de Vivienda y Ordenamiento Territorial, a trav\u00e9s de la Direcci\u00f3n de Propiedad Horizontal, conocer\u00e1 de todos los tr\u00e1mites relativos al R\u00e9gimen de Propiedad Horizontal y tendr\u00e1 entre sus funciones: acoger solicitudes; revisar y aprobar reglamentos; absolver consultas; servir de instancia de conciliaci\u00f3n; requerir informes; verificar actas y resoluciones; conocer quejas; emitir resoluciones de desafectaci\u00f3n; sancionar incumplimientos; capacitar; dictar medidas temporales.</p>"},109:{t:"T\u00cdTULO IX \u2014 Resoluci\u00f3n de Conflictos",c:"",x:"<p>Todas las controversias relativas al r\u00e9gimen de propiedad horizontal ser\u00e1n de competencia de la jurisdicci\u00f3n ordinaria. Los propietarios interesados podr\u00e1n optar a someterse a procesos arbitrales. (Primer p\u00e1rrafo reformado mediante Ley 467 de 24 de abril de 2025).</p>"},110:{t:"T\u00cdTULO IX \u2014 Resoluci\u00f3n de Conflictos",c:"",x:"<p>El \u00d3rgano Judicial podr\u00e1 crear juzgados especializados que conocer\u00e1n exclusivamente sobre propiedad horizontal.</p>"},111:{t:"T\u00cdTULO IX \u2014 Resoluci\u00f3n de Conflictos",c:"",x:"<p>Las acciones contra decisiones de la Asamblea de Propietarios, Junta Directiva y/o administrador prescriben en el t\u00e9rmino de tres meses.</p>"},112:{t:"T\u00cdTULO X \u2014 Disposiciones Complementarias",c:"",x:"<p>Sin perjuicio de dar cumplimiento a las disposiciones contenidas en la presente Ley, los aspectos relacionados con la creaci\u00f3n, enajenaci\u00f3n, modificaci\u00f3n, constituci\u00f3n de derechos reales y registro de bienes sometidos al R\u00e9gimen se regir\u00e1n por las normas de derecho com\u00fan.</p>"},113:{t:"T\u00cdTULO X \u2014 Disposiciones Complementarias",c:"",x:"<p>El R\u00e9gimen de Propiedad Horizontal se aplicar\u00e1 a proyectos de inter\u00e9s social, en beneficio directo para el Estado y la comunidad.</p>"},114:{t:"T\u00cdTULO X \u2014 Disposiciones Complementarias",c:"",x:"<p>Para la transferencia de una unidad inmobiliaria inscrita bajo el R\u00e9gimen de Propiedad Horizontal, el propietario o adquirente deber\u00e1 presentar al notario p\u00fablico el certificado de paz y salvo.</p>"},115:{t:"T\u00cdTULO X \u2014 Disposiciones Complementarias",c:"",x:"<p>La administraci\u00f3n de las unidades inmobiliarias informar\u00e1 mensualmente a las instituciones acreedoras de hipotecas sobre las unidades inmobiliarias que mantengan atraso de dos meses o m\u00e1s en el pago de sus cuotas.</p>"},116:{t:"T\u00cdTULO X \u2014 Disposiciones Complementarias",c:"",x:"<p>El usufructo de las \u00e1reas y facilidades comunes de la propiedad es inseparable e indivisible del pago de las cuotas de gastos comunes correspondientes por parte de cada propietario.</p>"},117:{t:"T\u00cdTULO X \u2014 Disposiciones Complementarias",c:"",x:"<p>En los contratos de promesa de compraventa y contratos de compraventa de unidades inmobiliarias comerciales o mixtas bajo el R\u00e9gimen de Propiedad Horizontal, ser\u00e1 obligatorio anunciar si la azotea ser\u00e1 o no de uso com\u00fan.</p>"},118:{t:"T\u00cdTULO XI \u2014 Disposici\u00f3n Adicional",c:"",x:"<p>Se adiciona el art\u00edculo 2-A a la Ley 45 de 2007: Se consideran consumidores, siempre que adquieran bienes y servicios como destinatario final en una relaci\u00f3n de consumo, las personas jur\u00eddicas incluyendo sociedades an\u00f3nimas, fundaciones de inter\u00e9s privado, asociaciones sin fines de lucro, entre otras.</p>"},119:{t:"T\u00cdTULO XII \u2014 Disposiciones Finales",c:"",x:"<p>Si los miembros de la Junta Directiva o el administrador incumplen las obligaciones previstas en la presente Ley quedar\u00e1n inhabilitados para el cargo de forma temporal o definitiva.</p>"},120:{t:"T\u00cdTULO XII \u2014 Disposiciones Finales",c:"",x:"<p>En la promesa de compraventa que suscriban el promitente comprador y el promitente vendedor, en el caso de viviendas nuevas, deber\u00e1n incluirse: detalle de metros; descripci\u00f3n del terreno; cantidad de estacionamientos; informaci\u00f3n de reservas del promotor; cargos econ\u00f3micos por periodo entre entrega y constituci\u00f3n del t\u00edtulo.</p>"},121:{t:"T\u00cdTULO XII \u2014 Disposiciones Finales",c:"",x:"<p>Para el c\u00e1lculo de las \u00e1reas de las unidades inmobiliarias, se incluir\u00e1 el \u00e1rea que ocupen las columnas dentro de la respectiva unidad inmobiliaria, los aleros y losas exteriores, as\u00ed como el \u00e1rea que ocupen las paredes exteriores.</p>"},122:{t:"T\u00cdTULO XII \u2014 Disposiciones Finales",c:"",x:"<p>Todos los reglamentos de copropiedad aprobados al amparo de la legislaci\u00f3n anterior continuar\u00e1n vigentes en lo que no sea contrario a la presente Ley, y se concede a la Asamblea de Propietarios el t\u00e9rmino de un a\u00f1o para solicitar la aprobaci\u00f3n de las reformas.</p>"},123:{t:"T\u00cdTULO XII \u2014 Disposiciones Finales",c:"",x:"<p>El \u00d3rgano Ejecutivo, a trav\u00e9s del Ministerio de Vivienda y Ordenamiento Territorial, reglamentar\u00e1 la presente Ley.</p>"},124:{t:"T\u00cdTULO XII \u2014 Disposiciones Finales",c:"",x:"<p>La presente Ley subroga la Ley 31 de 18 junio de 2010 y adiciona el art\u00edculo 2-A a la Ley 45 de 31 de octubre de 2007.</p>"},125:{t:"T\u00cdTULO XII \u2014 Disposiciones Finales",c:"",x:"<p>Esta Ley comenzar\u00e1 a regir desde su promulgaci\u00f3n.</p>"}};
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  var el = document.getElementById('page-' + id);
+  if (el) { el.classList.add('active'); }
+  updateBreadcrumb(id); window.scrollTo(0,0);
+}
+function updateBreadcrumb(id) {
+  var bc = document.getElementById('breadcrumb');
+  var labels = {'inicio':'🏠 Inicio','indice':'📋 Índice','contenido':'📖 Artículos'};
+  if (id==='inicio') {
+    bc.innerHTML='<a href="#" onclick="showPage(\'inicio\');return false">🏠 Inicio</a>';
+  } else {
+    bc.innerHTML='<a href="#" onclick="showPage(\'inicio\');return false">🏠</a><span class="sep">›</span><span>'+(labels[id]||id)+'</span>';
+  }
+}
+function toggleSidebar() {
+  document.getElementById('appSidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('active');
+}
+function closeSidebar() {
+  document.getElementById('appSidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('active');
+}
+function toggleArt(btn) {
+  var body = btn.nextElementSibling, isOpen = btn.classList.contains('open');
+  if (!isOpen) {
+    var artNum = btn.closest('.articulo').dataset.artnum;
+    var textDiv = body.querySelector('.art-text');
+    if (textDiv && !textDiv.dataset.loaded && ARTS[artNum]) {
+      textDiv.innerHTML = ARTS[artNum].x; textDiv.dataset.loaded = '1';
+    }
+    btn.classList.add('open'); body.classList.add('open');
+  } else { btn.classList.remove('open'); body.classList.remove('open'); }
+}
+function toggleIndiceTit(btn, id) {
+  btn.classList.toggle('open'); document.getElementById(id).classList.toggle('open');
+}
+function navToArt(num) {
+  showPage('contenido');
+  setTimeout(function() {
+    var el = document.getElementById('art-' + num);
+    if (el) {
+      el.scrollIntoView({behavior:'smooth', block:'center'});
+      var btn2 = el.querySelector('.art-header');
+      if (btn2 && !btn2.classList.contains('open')) toggleArt(btn2);
+      el.style.boxShadow = '0 0 0 3px #C87941';
+      setTimeout(function(){ el.style.boxShadow = ''; }, 2000);
+    }
+  }, 150);
+  return false;
+}
+function goToArtNum() {
+  var v = parseInt(document.getElementById('gotoInput').value); if(v) navToArt(v);
+}
+var searchResults = [], searchIdx = 0;
+function normalizeStr(s){ return s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+function globalSearch(term) {
+  clearHighlights();
+  if (!term || term.length < 2) {
+    document.getElementById('searchResultsBar').classList.remove('visible'); searchResults = []; return;
+  }
+  var tn = normalizeStr(term), matches = [];
+  for (var ns in ARTS) {
+    if (normalizeStr(ARTS[ns].x.replace(/<[^>]+>/g,' ')).indexOf(tn) !== -1) matches.push(parseInt(ns));
+  }
+  matches.sort(function(a,b){ return a-b; });
+  searchResults = matches; searchIdx = 0;
+  document.getElementById('searchResultsText').textContent = matches.length + ' resultado(s) para "' + term + '"';
+  document.getElementById('searchResultsBar').classList.add('visible');
+  if (matches.length > 0) { navToArt(matches[0]); setTimeout(function(){ highlightInArt(matches[0], term); }, 500); }
+}
+function nextSearchResult() {
+  if (!searchResults.length) return;
+  searchIdx = (searchIdx+1) % searchResults.length;
+  var num = searchResults[searchIdx]; navToArt(num);
+  setTimeout(function(){ highlightInArt(num, document.getElementById('topbarSearch').value); }, 500);
+}
+function prevSearchResult() {
+  if (!searchResults.length) return;
+  searchIdx = (searchIdx-1+searchResults.length) % searchResults.length;
+  var num = searchResults[searchIdx]; navToArt(num);
+  setTimeout(function(){ highlightInArt(num, document.getElementById('topbarSearch').value); }, 500);
+}
+function highlightInArt(artNum, term) {
+  var el = document.getElementById('art-'+artNum); if (!el) return;
+  var td = el.querySelector('.art-text'); if (!td || !td.dataset.loaded) return;
+  var e2 = term.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  td.innerHTML = td.innerHTML.replace(new RegExp('('+e2+')','gi'),'<mark class="highlight">$1</mark>');
+}
+function clearHighlights() {
+  document.querySelectorAll('.highlight').forEach(function(el){ var p=el.parentNode; p.replaceChild(document.createTextNode(el.textContent),el); p.normalize(); });
+}
+function clearSearch() {
+  document.getElementById('topbarSearch').value = '';
+  document.getElementById('searchResultsBar').classList.remove('visible');
+  clearHighlights(); searchResults = [];
+}
+function focusSearch(){ var i=document.getElementById('topbarSearch'); if(i){i.focus();i.select();} }
+function focusGoto(){ var i=document.getElementById('gotoInput'); if(i){i.focus();i.select();} }
+function setActiveNav(id){ document.querySelectorAll('.bottom-nav-item').forEach(function(b){b.classList.remove('active');}); var el=document.getElementById(id); if(el) el.classList.add('active'); }
+function openMobileSearch(){ var t=prompt('Ingrese término a buscar:'); if(t){document.getElementById('topbarSearch').value=t; globalSearch(t);} }
+function openMobileGoto(){ var n=prompt('Ingrese número de artículo:'); if(n){document.getElementById('gotoInput').value=n; goToArtNum();} }
+document.addEventListener('DOMContentLoaded', function(){
+  document.addEventListener('keydown', function(e){
+    if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){e.preventDefault();focusSearch();}
+  });
+});
+
+</script>
+</body>
+</html>

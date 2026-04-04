@@ -1,0 +1,22 @@
+{
+  "appId": "com.iurispocket.app",
+  "appName": "IurisPocket",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https",
+    "cleartext": false
+  },
+  "android": {
+    "allowMixedContent": false,
+    "backgroundColor": "#0a0e1a",
+    "overrideUserAgent": "IurisPocket/1.0"
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "backgroundColor": "#0a0e1a",
+      "androidSplashResourceName": "splash",
+      "showSpinner": false
+    }
+  }
+}

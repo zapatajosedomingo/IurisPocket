@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IurisPocket · Biblioteca Jurídica · Panamá</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0a0c12" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Crimson+Pro:wght@300;400;500&family=Cinzel:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:         #0a0c12;
+      --bg2:        #0f1220;
+      --bg3:        #141828;
+      --card:       #131829;
+      --card-hover: #1a2038;
+      --border:     rgba(255,255,255,0.07);
+      --gold:       #c9a84c;
+      --gold-light: #e8c97a;
+      --gold-dim:   rgba(201,168,76,0.15);
+      --red:        #b83232;
+      --blue:       #1a3f7a;
+      --white:      #f0ede6;
+      --muted:      rgba(240,237,230,0.45);
+      --accent1:    #2e4a8a;
+      --accent2:    #7a1f1f;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Crimson Pro', Georgia, serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ── Background texture ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(30,50,110,0.35) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(100,20,20,0.2) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrap { position: relative; z-index: 1; max-width: 480px; margin: 0 auto; padding: 0 0 60px; }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      padding: 52px 24px 40px;
+      position: relative;
+    }
+
+    .logo-ring {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--red) 0%, var(--blue) 100%);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 0 40px rgba(201,168,76,0.2), 0 0 80px rgba(26,63,122,0.3);
+      position: relative;
+    }
+    .logo-ring::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.4);
+    }
+    .logo-icon { font-size: 32px; filter: drop-shadow(0 0 8px rgba(201,168,76,0.5)); }
+
+    h1 {
+      font-family: 'Cinzel', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      background: linear-gradient(135deg, var(--gold-light), var(--gold), #a07830);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+    }
+    .subtitle {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .flag-bar {
+      display: flex; gap: 5px; justify-content: center; align-items: center;
+      margin-bottom: 4px;
+    }
+    .flag-bar span {
+      display: inline-block;
+      width: 28px; height: 5px; border-radius: 3px;
+    }
+    .flag-bar .f1 { background: var(--red); }
+    .flag-bar .f2 { background: var(--white); opacity:0.7; }
+    .flag-bar .f3 { background: var(--blue); }
+
+    /* ── Section label ── */
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      padding: 0 20px;
+      margin: 28px 0 10px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(201,168,76,0.4), transparent);
+    }
+
+    /* ── Norma Suprema (hero card) ── */
+    .hero-card {
+      margin: 0 16px;
+      background: linear-gradient(135deg, #1a2540 0%, #0f1828 60%, #1a1020 100%);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 16px;
+      padding: 24px 22px 20px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      display: block;
+    }
+    .hero-card:active { transform: scale(0.98); }
+    .hero-card::before {
+      content: '⚖';
+      position: absolute;
+      right: -10px; bottom: -14px;
+      font-size: 90px;
+      opacity: 0.06;
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 20px;
+      padding: 3px 12px 3px 8px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    .hero-badge-dot { width: 6px; height: 6px; background: var(--gold); border-radius: 50%; }
+    .hero-card h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 5px;
+    }
+    .hero-card .meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 18px;
+    }
+    .hero-stats {
+      display: flex; gap: 24px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 14px;
+    }
+    .stat-item { display: flex; flex-direction: column; gap: 2px; }
+    .stat-num {
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      color: var(--gold-light);
+      font-weight: 600;
+    }
+    .stat-lbl {
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+    .hero-arrow {
+      position: absolute;
+      right: 18px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--gold);
+      font-size: 1.2rem;
+      opacity: 0.6;
+    }
+
+    /* ── Collapsible group ── */
+    .group {
+      margin: 0 16px 8px;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: var(--card);
+    }
+
+    .group-header {
+      display: flex; align-items: center; gap: 12px;
+      padding: 15px 18px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .group-header:active { background: var(--card-hover); }
+
+    .group-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .group-text { flex: 1; }
+    .group-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.2;
+    }
+    .group-count {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .group-chevron {
+      color: var(--muted);
+      font-size: 0.75rem;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+    .group.open .group-chevron { transform: rotate(180deg); }
+
+    /* ── Group items ── */
+    .group-items {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+    }
+    .group.open .group-items { max-height: 600px; }
+
+    .group-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 18px;
+    }
+
+    .law-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 13px 18px;
+      text-decoration: none;
+      color: var(--white);
+      transition: background 0.15s;
+      position: relative;
+    }
+    .law-item + .law-item::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 18px; right: 18px;
+      height: 1px;
+      background: var(--border);
+    }
+    .law-item:active { background: rgba(255,255,255,0.04); }
+
+    .law-item-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .law-item-text { flex: 1; }
+    .law-item-name {
+      font-size: 0.95rem;
+      color: var(--white);
+      line-height: 1.3;
+    }
+    .law-item-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+    .law-item-arrow {
+      color: var(--muted);
+      font-size: 0.7rem;
+      flex-shrink: 0;
+    }
+
+    /* ── Solo card (single item group) ── */
+    .solo-card {
+      margin: 0 16px 8px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      display: flex; align-items: center; gap: 12px;
+      padding: 15px 18px;
+      text-decoration: none;
+      color: var(--white);
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    .solo-card:active { background: var(--card-hover); }
+    .solo-card .group-text .group-name { font-size: 1rem; }
+    .solo-arrow {
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-left: auto;
+    }
+
+    /* ── Reference card (Diccionario) ── */
+    .ref-card {
+      margin: 0 16px 8px;
+      border-radius: 14px;
+      border: 1px solid rgba(201,168,76,0.2);
+      background: linear-gradient(135deg, #14180f 0%, #0f1220 100%);
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 18px;
+      text-decoration: none;
+      color: var(--white);
+      transition: background 0.2s;
+      cursor: pointer;
+      position: relative; overflow: hidden;
+    }
+    .ref-card::before {
+      content: '📖';
+      position: absolute; right: -5px; bottom: -10px;
+      font-size: 60px; opacity: 0.06; pointer-events: none;
+    }
+    .ref-card:active { background: #1a201a; }
+    .ref-card .group-name { color: var(--gold-light); }
+    .ref-card .group-count { color: rgba(201,168,76,0.5); }
+
+    /* ── Colors per group ── */
+    .g-civil    .group-icon { background: rgba(30,80,160,0.2); color: #6a9de0; border: 1px solid rgba(30,80,160,0.3); }
+    .g-penal    .group-icon { background: rgba(160,30,30,0.2); color: #e07070; border: 1px solid rgba(160,30,30,0.3); }
+    .g-comercio .group-icon { background: rgba(30,120,80,0.2); color: #6acea0; border: 1px solid rgba(30,120,80,0.3); }
+    .g-trabajo  .group-icon { background: rgba(160,100,20,0.2); color: #e0b870; border: 1px solid rgba(160,100,20,0.3); }
+    .g-admin    .group-icon { background: rgba(80,30,140,0.2); color: #b070e0; border: 1px solid rgba(80,30,140,0.3); }
+    .g-fiscal   .group-icon { background: rgba(20,120,120,0.2); color: #6acece; border: 1px solid rgba(20,120,120,0.3); }
+    .g-agrario  .group-icon { background: rgba(50,120,30,0.2); color: #8ade6a; border: 1px solid rgba(50,120,30,0.3); }
+    .g-ambiental .group-icon { background: rgba(30,110,50,0.2); color: #5ec478; border: 1px solid rgba(30,110,50,0.3); }
+    .g-electoral .group-icon { background: rgba(140,100,20,0.2); color: #d4a855; border: 1px solid rgba(140,100,20,0.3); }
+    .g-judicial  .group-icon { background: rgba(60,50,140,0.2); color: #9080d8; border: 1px solid rgba(60,50,140,0.3); }
+
+    .dot-civil    { background: #6a9de0; }
+    .dot-penal    { background: #e07070; }
+    .dot-comercio { background: #6acea0; }
+    .dot-civil2   { background: #8ab0e0; }
+
+    /* ── Expand hint ── */
+    .expand-hint {
+      margin: 0 16px;
+      background: rgba(201,168,76,0.05);
+      border: 1px dashed rgba(201,168,76,0.2);
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin-top: 8px;
+    }
+    .expand-hint h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .expand-hint p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .expand-hint code {
+      font-family: 'Courier New', monospace;
+      font-size: 0.78rem;
+      background: rgba(201,168,76,0.1);
+      color: var(--gold-light);
+      padding: 1px 5px;
+      border-radius: 4px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 30px 24px 20px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.55rem;
+      letter-spacing: 0.25em;
+      color: rgba(240,237,230,0.2);
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo-ring">
+      <span class="logo-icon">⚖️</span>
+    </div>
+    <h1>IurisPocket</h1>
+    <p class="subtitle">Biblioteca Jurídica · República de Panamá</p>
+    <div class="flag-bar">
+      <span class="f1"></span><span class="f2"></span><span class="f3"></span>
+    </div>
+  </header>
+
+  <!-- NORMA SUPREMA -->
+  <div class="section-label">Norma Suprema</div>
+  <a href="Constitucion_Panama.html" class="hero-card">
+    <div class="hero-badge"><span class="hero-badge-dot"></span>Constitución Política</div>
+    <h2>República de Panamá</h2>
+    <p class="meta">1972 · Con reformas de 1978, 1983, 1992, 1994 y 2004</p>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">328</span>
+        <span class="stat-lbl">Artículos</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">15</span>
+        <span class="stat-lbl">Títulos</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">1972</span>
+        <span class="stat-lbl">Promulgada</span>
+      </div>
+    </div>
+    <span class="hero-arrow">›</span>
+  </a>
+
+  <!-- CÓDIGOS Y LEYES -->
+  <div class="section-label">Códigos y Leyes</div>
+
+  <!-- 1. Derecho Civil y Procesal -->
+  <div class="group g-civil" id="g1">
+    <div class="group-header" onclick="toggle('g1')">
+      <div class="group-icon">⚖</div>
+      <div class="group-text">
+        <div class="group-name">Derecho Civil y Procesal</div>
+        <div class="group-count">4 documentos</div>
+      </div>
+      <span class="group-chevron">▼</span>
+    </div>
+    <div class="group-items">
+      <div class="group-divider"></div>
+      <a href="Codigo_Civil_Panama.html" class="law-item">
+        <span class="law-item-dot dot-civil"></span>
+        <div class="law-item-text">
+          <div class="law-item-name">Código Civil</div>
+          <div class="law-item-sub">Ley Nº 2 de 1916 · 1,585 artículos</div>
+        </div>
+        <span class="law-item-arrow">›</span>
+      </a>
+      <a href="Codigo_Procesal_Civil_Panama.html" class="law-item">
+        <span class="law-item-dot dot-civil"></span>
+        <div class="law-item-text">
+          <div class="law-item-name">Código Procesal Civil</div>
+          <div class="law-item-sub">Procedimiento civil · Jurisdicción</div>
+        </div>
+        <span class="law-item-arrow">›</span>
+      </a>
+      <a href="Codigo_Familia_Panama.html" class="law-item">
+        <span class="law-item-dot dot-civil2"></span>
+        <div class="law-item-text">
+          <div class="law-item-name">Código de la Familia</div>
+          <div class="law-item-sub">Ley 3 de 1994</div>
+        </div>
+        <span class="law-item-arrow">›</span>
+      </a>
+      <a href="Ley_Propiedad_Horizontal_284_2022.html" class="law-item">
+        <span class="law-item-dot dot-civil2"></span>
+        <div class="law-item-text">
+          <div class="law-item-name">Ley de Propiedad Horizontal</div>
+          <div class="law-item-sub">Ley 284 de 2022 · Régimen de propiedad en piso</div>
+        </div>
+        <span class="law-item-arrow">›</span>
+      </a>
+      <a href="Ley_Arrendamiento_93_1973.html" class="law-item">
+        <span class="law-item-dot dot-civil2"></span>
+        <div class="law-item-text">
+          <div class="law-item-name">Ley de Arrendamientos</div>
+          <div class="law-item-sub">Ley 93 de 1973 · Contratos de alquiler</div>
+        </div>
+        <span class="law-item-arrow">›</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 2. Derecho Penal -->
+  <div class="group g-penal" id="g2">
+    <div class="group-header" onclick="toggle('g2')">
+      <div class="group-icon">🔒</div>
+      <div class="group-text">
+        <div class="group-name">Derecho Penal</div>
+        <div class="group-count">2 documentos</div>
+      </div>
+      <span class="group-chevron">▼</span>
+    </div>
+    <div class="group-items">
+      <div class="group-divider"></div>
+      <a href="Codigo_Penal_Panama.html" class="law-item">
+        <span class="law-item-dot dot-penal"></span>
+        <div class="law-item-text">
+          <div class="law-item-name">Código Penal</div>
+          <div class="law-item-sub">Ley Nº 14 de 2007 · Derecho sustantivo</div>
+        </div>
+        <span class="law-item-arrow">›</span>
+      </a>
+      <a href="Codigo_Procesal_Penal_Panama.html" class="law-item">
+        <span class="law-item-dot dot-penal"></span>
+        <div class="law-item-text">
+          <div class="law-item-name">Código Procesal Penal</div>
+          <div class="law-item-sub">Sistema acusatorio · Ley 63 de 2008</div>
+        </div>
+        <span class="law-item-arrow">›</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 3. Código Judicial (solo) -->
+  <a href="Codigo_Judicial_Panama.html" class="solo-card g-judicial">
+    <div class="group-icon">🏛</div>
+    <div class="group-text">
+      <div class="group-name">Código Judicial</div>
+      <div class="group-count">Organización y procedimiento judicial</div>
+    </div>
+    <span class="solo-arrow">›</span>
+  </a>
+
+  <!-- 4. Derecho Comercial -->
+  <div class="group g-comercio" id="g4">
+    <div class="group-header" onclick="toggle('g4')">
+      <div class="group-icon">🏢</div>
+      <div class="group-text">
+        <div class="group-name">Derecho Comercial y Empresarial</div>
+        <div class="group-count">2 documentos</div>
+      </div>
+      <span class="group-chevron">▼</span>
+    </div>
+    <div class="group-items">
+      <div class="group-divider"></div>
+      <a href="Codigo_Comercio_Panama.html" class="law-item">
+        <span class="law-item-dot dot-comercio"></span>
+        <div class="law-item-text">
+          <div class="law-item-name">Código de Comercio</div>
+          <div class="law-item-sub">Ley Nº 2 de 1916 · Derecho mercantil</div>
+        </div>
+        <span class="law-item-arrow">›</span>
+      </a>
+      <a href="Ley_Sociedades_Anonimas_32_1927.html" class="law-item">
+        <span class="law-item-dot dot-comercio"></span>
+        <div class="law-item-text">
+          <div class="law-item-name">Ley de Sociedades Anónimas</div>
+          <div class="law-item-sub">Ley 32 de 1927</div>
+        </div>
+        <span class="law-item-arrow">›</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 5. Código de Trabajo (solo) -->
+  <a href="Codigo_Trabajo_Panama.html" class="solo-card g-trabajo">
+    <div class="group-icon">👷</div>
+    <div class="group-text">
+      <div class="group-name">Código de Trabajo</div>
+      <div class="group-count">Relaciones laborales · Derecho del trabajo</div>
+    </div>
+    <span class="solo-arrow">›</span>
+  </a>
+
+  <!-- 6. Derecho Administrativo (solo) -->
+  <a href="Codigo_Administrativo_Panama.html" class="solo-card g-admin">
+    <div class="group-icon">📋</div>
+    <div class="group-text">
+      <div class="group-name">Derecho Administrativo</div>
+      <div class="group-count">Administración pública · Actos administrativos</div>
+    </div>
+    <span class="solo-arrow">›</span>
+  </a>
+
+  <!-- 7. Código Fiscal (solo) -->
+  <a href="Codigo_Fiscal_Panama.html" class="solo-card g-fiscal">
+    <div class="group-icon">💰</div>
+    <div class="group-text">
+      <div class="group-name">Código Fiscal</div>
+      <div class="group-count">Tributación · Hacienda pública</div>
+    </div>
+    <span class="solo-arrow">›</span>
+  </a>
+
+  <!-- 8. Código Agrario (solo) -->
+  <a href="Codigo_Agrario_Panama.html" class="solo-card g-agrario">
+    <div class="group-icon">🌾</div>
+    <div class="group-text">
+      <div class="group-name">Código Agrario</div>
+      <div class="group-count">Tierras · Reforma agraria</div>
+    </div>
+    <span class="solo-arrow">›</span>
+  </a>
+
+  <!-- 9. Leyes Especiales -->
+  <div class="section-label">Leyes Especiales</div>
+
+  <!-- Ley 41 de 1998 (solo) -->
+  <a href="Ley_Ambiente_41_1998.html" class="solo-card g-ambiental">
+    <div class="group-icon">🌿</div>
+    <div class="group-text">
+      <div class="group-name">Ley 41 de 1998</div>
+      <div class="group-count">Ley General de Ambiente · República de Panamá</div>
+    </div>
+    <span class="solo-arrow">›</span>
+  </a>
+
+  <!-- Código Electoral (solo) -->
+  <a href="Codigo_Electoral_Panama.html" class="solo-card g-electoral">
+    <div class="group-icon">🗳</div>
+    <div class="group-text">
+      <div class="group-name">Código Electoral</div>
+      <div class="group-count">Procesos electorales · Tribunal Electoral</div>
+    </div>
+    <span class="solo-arrow">›</span>
+  </a>
+
+  <!-- REFERENCIA JURÍDICA -->
+  <div class="section-label">Referencia Jurídica</div>
+
+  <a href="Diccionario_Juridico_Elemental_Cabanellas.html" class="ref-card">
+    <div class="group-icon" style="background:rgba(201,168,76,0.12);color:var(--gold);border:1px solid rgba(201,168,76,0.3);width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;">📚</div>
+    <div class="group-text">
+      <div class="group-name">Diccionario Jurídico Elemental</div>
+      <div class="group-count">Guillermo Cabanellas de Torres · Terminología legal</div>
+    </div>
+    <span class="solo-arrow" style="color:var(--gold);opacity:0.6;">›</span>
+  </a>
+
+  <footer>IURISPOCKET · KOSMOS FIDES GROUP · PANAMÁ 🇵🇦</footer>
+</div>
+
+<script>
+  function toggle(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/service-worker.js');
+  }
+</script>
+</body>
+</html>
