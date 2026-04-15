@@ -3664,57 +3664,84 @@ function goToCapitulo(id) {
   }, 50);
 }
 
+/* ── Utilidades ── */
+function normalize(str) {
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+function escapeRe(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/* ── Ir a artículo por número ── */
 function gotoArt() {
-  var n = parseInt(document.getElementById('goto-input').value);
-  if (!n || n < 1 || n > 742) return;
+  var raw = document.getElementById('goto-input').value.trim();
+  var n = parseInt(raw, 10);
+  if (!n || n < 1 || n > 742) {
+    var inp = document.getElementById('goto-input');
+    inp.style.outline = '2px solid #B5182B';
+    setTimeout(function() { inp.style.outline = ''; }, 1200);
+    return;
+  }
   showPage('texto');
   setTimeout(function() {
     var el = document.getElementById('art-' + n);
     if (el) {
-      el.scrollIntoView({behavior:'smooth', block:'center'});
+      el.scrollIntoView({behavior: 'smooth', block: 'center'});
       el.classList.add('highlight-art');
-      setTimeout(function() { el.classList.remove('highlight-art'); }, 2000);
+      setTimeout(function() { el.classList.remove('highlight-art'); }, 2200);
     }
   }, 80);
 }
 
+/* ── Búsqueda rápida (barra superior) ── */
 function runSearch() {
   var q = document.getElementById('search-input').value.trim();
   if (!q) return;
   clearHighlights();
-  searchMatches = [];
-  searchIdx = -1;
-  var re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
-  var walker = document.createTreeWalker(document.getElementById('texto-inner'), NodeFilter.SHOW_TEXT);
-  var node;
-  var toReplace = [];
+  searchMatches = []; searchIdx = -1;
+
+  var qNorm = normalize(q);
+  var reEsc = escapeRe(qNorm);
+  var reTest = new RegExp(reEsc, 'g');
+
+  var walker = document.createTreeWalker(
+    document.getElementById('texto-inner'),
+    NodeFilter.SHOW_TEXT, null, false
+  );
+  var node; var toReplace = [];
   while ((node = walker.nextNode())) {
-    if (re.test(node.textContent)) toReplace.push(node);
+    reTest.lastIndex = 0;
+    if (reTest.test(normalize(node.textContent))) toReplace.push(node);
   }
+
   toReplace.forEach(function(node) {
+    var orig = node.textContent;
+    var origNorm = normalize(orig);
     var frag = document.createDocumentFragment();
-    var parts = node.textContent.split(re);
-    var matches = node.textContent.match(re);
-    parts.forEach(function(part, i) {
-      frag.appendChild(document.createTextNode(part));
-      if (matches && matches[i]) {
-        var mark = document.createElement('mark');
-        mark.className = 'highlight';
-        mark.textContent = matches[i];
-        searchMatches.push(mark);
-        frag.appendChild(mark);
-      }
-    });
+    var re2 = new RegExp(reEsc, 'g');
+    var last = 0; var m;
+    while ((m = re2.exec(origNorm)) !== null) {
+      if (m.index > last) frag.appendChild(document.createTextNode(orig.slice(last, m.index)));
+      var mark = document.createElement('mark');
+      mark.className = 'highlight';
+      mark.textContent = orig.slice(m.index, m.index + m[0].length);
+      searchMatches.push(mark);
+      frag.appendChild(mark);
+      last = m.index + m[0].length;
+    }
+    if (last < orig.length) frag.appendChild(document.createTextNode(orig.slice(last)));
     node.parentNode.replaceChild(frag, node);
   });
+
   var bar = document.getElementById('search-results-bar');
   var cnt = document.getElementById('search-count');
   if (searchMatches.length > 0) {
     bar.classList.add('visible');
-    cnt.textContent = searchMatches.length + ' resultados para "' + q + '"';
-    searchIdx = 0;
-    goToMatch(0);
-    showPage('texto');
+    cnt.textContent = searchMatches.length + ' resultado' + (searchMatches.length !== 1 ? 's' : '') + ' para "' + q + '"';
+    searchIdx = 0; goToMatch(0); showPage('texto');
   } else {
     bar.classList.add('visible');
     cnt.textContent = 'Sin resultados para "' + q + '"';
@@ -3725,19 +3752,11 @@ function goToMatch(idx) {
   searchMatches.forEach(function(m) { m.classList.remove('current'); });
   if (searchMatches[idx]) {
     searchMatches[idx].classList.add('current');
-    searchMatches[idx].scrollIntoView({behavior:'smooth', block:'center'});
+    searchMatches[idx].scrollIntoView({behavior: 'smooth', block: 'center'});
   }
 }
-function nextMatch() {
-  if (!searchMatches.length) return;
-  searchIdx = (searchIdx + 1) % searchMatches.length;
-  goToMatch(searchIdx);
-}
-function prevMatch() {
-  if (!searchMatches.length) return;
-  searchIdx = (searchIdx - 1 + searchMatches.length) % searchMatches.length;
-  goToMatch(searchIdx);
-}
+function nextMatch() { if (!searchMatches.length) return; searchIdx = (searchIdx + 1) % searchMatches.length; goToMatch(searchIdx); }
+function prevMatch() { if (!searchMatches.length) return; searchIdx = (searchIdx - 1 + searchMatches.length) % searchMatches.length; goToMatch(searchIdx); }
 function clearSearch() {
   clearHighlights();
   document.getElementById('search-results-bar').classList.remove('visible');
@@ -3752,31 +3771,105 @@ function clearHighlights() {
   });
 }
 
+/* ── Búsqueda avanzada ── */
 function runAdvSearch() {
-  var q = document.getElementById('adv-search-input').value.trim().toLowerCase();
+  var raw = document.getElementById('adv-search-input').value.trim();
   var results = document.getElementById('busqueda-results');
-  if (!q) { results.innerHTML = '<p class="no-results">Ingrese una búsqueda.</p>'; return; }
+  if (!raw) { results.innerHTML = '<p class="no-results">Ingrese una búsqueda.</p>'; return; }
+
+  var qNorm = normalize(raw);
+  var reEsc = escapeRe(qNorm);
+  var re = new RegExp(reEsc, 'g');
+
+  /* Detectar búsqueda por número exacto: "artículo 5", "art. 5", "art 5", o solo "5" */
+  var artNumMatch = raw.trim().match(/^(?:art[ií]culo\.?\s*|art\.?\s*)?(\d+)$/i);
+
   var articles = document.querySelectorAll('.articulo');
   var found = [];
-  var re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+
   articles.forEach(function(art) {
-    var text = art.querySelector('.art-body') ? art.querySelector('.art-body').textContent : '';
-    var num = art.querySelector('.art-num') ? art.querySelector('.art-num').textContent : '';
-    if (re.test(text) || re.test(num)) {
-      found.push({id: art.id, num: num, text: text.substring(0, 250)});
+    var body = art.querySelector('.art-body');
+    var numEl = art.querySelector('.art-num');
+    var bodyText = body ? body.textContent : '';
+    var numText = numEl ? numEl.textContent : '';
+    var artNum = parseInt((art.id || '').replace('art-', ''), 10);
+
+    var matched = false;
+    var matchedByNum = false;
+
+    if (artNumMatch) {
+      var target = parseInt(artNumMatch[1], 10);
+      if (artNum === target) { matched = true; matchedByNum = true; }
+    } else {
+      re.lastIndex = 0;
+      if (re.test(normalize(bodyText))) matched = true;
+      re.lastIndex = 0;
+      if (!matched && re.test(normalize(numText))) matched = true;
+    }
+
+    if (matched) {
+      var snippet = '';
+      if (!matchedByNum) {
+        var bodyNorm = normalize(bodyText);
+        re.lastIndex = 0;
+        var firstM = re.exec(bodyNorm);
+        if (firstM) {
+          var start = Math.max(0, firstM.index - 80);
+          var end = Math.min(bodyText.length, firstM.index + firstM[0].length + 160);
+          snippet = (start > 0 ? '…' : '') + bodyText.slice(start, end) + (end < bodyText.length ? '…' : '');
+        } else {
+          snippet = bodyText.substring(0, 280);
+        }
+      } else {
+        snippet = bodyText.substring(0, 280);
+      }
+      found.push({id: art.id, num: numText, snippet: snippet, artNum: artNum});
     }
   });
+
+  /* Ordenar por número de artículo */
+  found.sort(function(a, b) { return a.artNum - b.artNum; });
+
   if (!found.length) {
-    results.innerHTML = '<p class="no-results">No se encontraron resultados para "' + q + '".</p>';
+    results.innerHTML = '<p class="no-results">No se encontraron resultados para "' + raw + '".</p>';
     return;
   }
-  var html = '<p style="font-size:0.8rem;color:#888;margin-bottom:10px">' + found.length + ' resultado(s) encontrado(s)</p>';
+
+  var html = '<p style="font-size:0.8rem;color:#888;margin-bottom:10px">' +
+    found.length + ' resultado' + (found.length !== 1 ? 's' : '') + ' para "' + raw + '"</p>';
+
   found.slice(0, 50).forEach(function(r) {
-    var snippet = r.text.replace(new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi'), '<mark class="highlight">$1</mark>');
-    html += '<div class="result-card" onclick="goToArticle(\'' + r.id + '\')"><div class="result-art-num">' + r.num + '</div><div class="result-text">' + snippet + '...</div></div>';
+    /* Intentar resaltar con texto original primero, luego con normalización */
+    var snipHl = r.snippet.replace(
+      new RegExp('(' + escapeRe(raw) + ')', 'gi'),
+      '<mark class="highlight">$1</mark>'
+    );
+    if (snipHl === r.snippet && !artNumMatch) {
+      snipHl = highlightNormalized(r.snippet, qNorm);
+    }
+    html += '<div class="result-card" onclick="goToArticle(\'' + r.id + '\')">' +
+      '<div class="result-art-num">' + r.num + '</div>' +
+      '<div class="result-text">' + snipHl + '</div></div>';
   });
-  if (found.length > 50) html += '<p style="text-align:center;color:#999;font-size:0.8rem;margin-top:10px">Mostrando los primeros 50 de ' + found.length + ' resultados</p>';
+
+  if (found.length > 50) {
+    html += '<p style="text-align:center;color:#999;font-size:0.8rem;margin-top:10px">Mostrando los primeros 50 de ' + found.length + ' resultados</p>';
+  }
   results.innerHTML = html;
+}
+
+/* Resalta sobre texto original preservando acentos y capitalización */
+function highlightNormalized(orig, qNorm) {
+  var origNorm = normalize(orig);
+  var re = new RegExp(escapeRe(qNorm), 'g');
+  var result = ''; var last = 0; var m;
+  while ((m = re.exec(origNorm)) !== null) {
+    result += escapeHtml(orig.slice(last, m.index));
+    result += '<mark class="highlight">' + escapeHtml(orig.slice(m.index, m.index + m[0].length)) + '</mark>';
+    last = m.index + m[0].length;
+  }
+  result += escapeHtml(orig.slice(last));
+  return result;
 }
 
 function goToArticle(id) {
