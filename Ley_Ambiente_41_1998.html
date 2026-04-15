@@ -1055,41 +1055,102 @@ function goToSection(id){
   },60);
 }
 
-function gotoArt(){
-  var n=parseInt(document.getElementById('goto-input').value);
-  if(!n||n<1||n>126)return;
-  goToSection('art-'+n);
+/* ── Utilidades de normalización ── */
+function normalize(str){
+  return str.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+}
+function escapeRe(s){
+  return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
 }
 
+/* ── Ir a artículo por número ── */
+function gotoArt(){
+  var raw=document.getElementById('goto-input').value.trim();
+  var n=parseInt(raw,10);
+  if(!n||n<1||n>126){
+    document.getElementById('goto-input').style.outline='2px solid #CC0001';
+    setTimeout(function(){document.getElementById('goto-input').style.outline='';},1200);
+    return;
+  }
+  /* Asegurar que la página de texto esté visible antes de hacer scroll */
+  showPage('texto');
+  setTimeout(function(){
+    var el=document.getElementById('art-'+n);
+    if(el){
+      el.scrollIntoView({behavior:'smooth',block:'center'});
+      el.classList.add('highlight-art');
+      setTimeout(function(){el.classList.remove('highlight-art');},2200);
+    }
+  },80);
+}
+
+/* ── Búsqueda rápida en la barra superior ── */
 function runSearch(){
   var q=document.getElementById('search-input').value.trim();
   if(!q)return;
   clearHighlights();
   searchMatches=[];searchIdx=-1;
-  var re=new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'gi');
-  var walker=document.createTreeWalker(document.getElementById('texto-inner'),NodeFilter.SHOW_TEXT);
+
+  var qNorm=normalize(q);
+  var reEsc=escapeRe(qNorm);
+  /* Construimos un regex sobre texto normalizado para hallar posiciones */
+  var reTest=new RegExp(reEsc,'g');
+
+  var walker=document.createTreeWalker(
+    document.getElementById('texto-inner'),
+    NodeFilter.SHOW_TEXT,
+    null,false
+  );
   var node;var toReplace=[];
-  while((node=walker.nextNode())){if(re.test(node.textContent)){toReplace.push(node);}}
+  while((node=walker.nextNode())){
+    /* Resetear lastIndex y comparar sobre texto normalizado */
+    reTest.lastIndex=0;
+    if(reTest.test(normalize(node.textContent))){
+      toReplace.push(node);
+    }
+  }
+
   toReplace.forEach(function(node){
+    var orig=node.textContent;
+    var origNorm=normalize(orig);
     var frag=document.createDocumentFragment();
-    var parts=node.textContent.split(re);
-    var matches=node.textContent.match(re);
-    parts.forEach(function(part,i){
-      frag.appendChild(document.createTextNode(part));
-      if(matches&&matches[i]){var mark=document.createElement('mark');mark.className='highlight';mark.textContent=matches[i];searchMatches.push(mark);frag.appendChild(mark);}
-    });
+    var re2=new RegExp(reEsc,'g');
+    var last=0;var m;
+    while((m=re2.exec(origNorm))!==null){
+      /* Texto anterior a la coincidencia */
+      if(m.index>last){
+        frag.appendChild(document.createTextNode(orig.slice(last,m.index)));
+      }
+      /* Tramo original con su capitalización/acentos */
+      var mark=document.createElement('mark');
+      mark.className='highlight';
+      mark.textContent=orig.slice(m.index,m.index+m[0].length);
+      searchMatches.push(mark);
+      frag.appendChild(mark);
+      last=m.index+m[0].length;
+    }
+    if(last<orig.length){frag.appendChild(document.createTextNode(orig.slice(last)));}
     node.parentNode.replaceChild(frag,node);
   });
+
   var bar=document.getElementById('search-results-bar');
   var cnt=document.getElementById('search-count');
   if(searchMatches.length>0){
-    bar.classList.add('visible');cnt.textContent=searchMatches.length+' resultados para "'+q+'"';
+    bar.classList.add('visible');
+    cnt.textContent=searchMatches.length+' resultado'+(searchMatches.length!==1?'s':'')+' para "'+q+'"';
     searchIdx=0;goToMatch(0);showPage('texto');
-  }else{bar.classList.add('visible');cnt.textContent='Sin resultados para "'+q+'"';}
+  }else{
+    bar.classList.add('visible');
+    cnt.textContent='Sin resultados para "'+q+'"';
+  }
 }
+
 function goToMatch(idx){
-  searchMatches.forEach(function(m){m.classList.remove('current')});
-  if(searchMatches[idx]){searchMatches[idx].classList.add('current');searchMatches[idx].scrollIntoView({behavior:'smooth',block:'center'});}
+  searchMatches.forEach(function(m){m.classList.remove('current');});
+  if(searchMatches[idx]){
+    searchMatches[idx].classList.add('current');
+    searchMatches[idx].scrollIntoView({behavior:'smooth',block:'center'});
+  }
 }
 function nextMatch(){if(!searchMatches.length)return;searchIdx=(searchIdx+1)%searchMatches.length;goToMatch(searchIdx);}
 function prevMatch(){if(!searchMatches.length)return;searchIdx=(searchIdx-1+searchMatches.length)%searchMatches.length;goToMatch(searchIdx);}
@@ -1101,32 +1162,125 @@ function clearSearch(){
 }
 function clearHighlights(){
   document.querySelectorAll('mark.highlight').forEach(function(m){
-    var parent=m.parentNode;parent.replaceChild(document.createTextNode(m.textContent),m);parent.normalize();
+    var parent=m.parentNode;
+    parent.replaceChild(document.createTextNode(m.textContent),m);
+    parent.normalize();
   });
 }
 
+/* ── Búsqueda avanzada ── */
 function runAdvSearch(){
-  var q=document.getElementById('adv-search-input').value.trim().toLowerCase();
+  var raw=document.getElementById('adv-search-input').value.trim();
   var results=document.getElementById('busqueda-results');
-  if(!q){results.innerHTML='<p class="no-results">Ingrese una búsqueda.</p>';return;}
+  if(!raw){results.innerHTML='<p class="no-results">Ingrese una búsqueda.</p>';return;}
+
+  var qNorm=normalize(raw);
+  var reEsc=escapeRe(qNorm);
+  var re=new RegExp(reEsc,'g');
+
+  /* Detección de búsqueda por número exacto de artículo:
+     acepta "artículo 5", "art. 5", "art 5", o solo "5" si es puramente numérico */
+  var artNumMatch=raw.trim().match(/^(?:art[ií]culo\.?\s*|art\.?\s*)?(\d+)$/i);
+
   var articles=document.querySelectorAll('.articulo');
   var found=[];
-  var re=new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'i');
+
   articles.forEach(function(art){
     var body=art.querySelector('.art-body');
     var numEl=art.querySelector('.art-num');
-    var text=body?body.textContent:'';
-    var num=numEl?numEl.textContent:'';
-    if(re.test(text)||re.test(num)){found.push({id:art.id,num:num,text:text.substring(0,280)});}
+    var bodyText=body?body.textContent:'';
+    var numText=numEl?numEl.textContent:'';
+
+    /* Número del artículo extraído del id (art-5 → 5) */
+    var artId=art.id||'';
+    var artNum=parseInt(artId.replace('art-',''),10);
+
+    var matched=false;
+    var matchedByNum=false;
+
+    if(artNumMatch){
+      /* Búsqueda por número exacto */
+      var target=parseInt(artNumMatch[1],10);
+      if(artNum===target){matched=true;matchedByNum=true;}
+    } else {
+      /* Búsqueda por texto normalizado en cuerpo y encabezado */
+      re.lastIndex=0;
+      if(re.test(normalize(bodyText))){matched=true;}
+      re.lastIndex=0;
+      if(!matched && re.test(normalize(numText))){matched=true;}
+    }
+
+    if(matched){
+      /* Snippet: encontrar el fragmento más relevante alrededor de la primera coincidencia */
+      var snippet='';
+      if(!matchedByNum){
+        var bodyNorm=normalize(bodyText);
+        re.lastIndex=0;
+        var firstM=re.exec(bodyNorm);
+        if(firstM){
+          var start=Math.max(0,firstM.index-80);
+          var end=Math.min(bodyText.length,firstM.index+firstM[0].length+160);
+          snippet=(start>0?'…':'')+bodyText.slice(start,end)+(end<bodyText.length?'…':'');
+        } else {
+          snippet=bodyText.substring(0,280);
+        }
+      } else {
+        snippet=bodyText.substring(0,280);
+      }
+      found.push({id:art.id,num:numText,snippet:snippet,artNum:artNum});
+    }
   });
-  if(!found.length){results.innerHTML='<p class="no-results">No se encontraron resultados para "'+q+'".</p>';return;}
-  var html='<p style="font-size:0.8rem;color:#888;margin-bottom:10px">'+found.length+' resultado(s) encontrado(s)</p>';
+
+  /* Ordenar por número de artículo */
+  found.sort(function(a,b){return a.artNum-b.artNum;});
+
+  if(!found.length){
+    results.innerHTML='<p class="no-results">No se encontraron resultados para "'+raw+'".</p>';
+    return;
+  }
+
+  var reHl=new RegExp('('+reEsc+')','gi');
+  var html='<p style="font-size:0.8rem;color:#888;margin-bottom:10px">'+
+    found.length+' resultado'+(found.length!==1?'s':'')+' para "'+raw+'"</p>';
+
   found.slice(0,50).forEach(function(r){
-    var snippet=r.text.replace(new RegExp('('+q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')','gi'),'<mark class="highlight">$1</mark>');
-    html+='<div class="result-card" onclick="goToSection(\''+r.id+'\')"><div class="result-art-num">'+r.num+'</div><div class="result-text">'+snippet+'...</div></div>';
+    /* Resaltar en el snippet usando texto original (no normalizado) */
+    var snipHl=r.snippet.replace(
+      new RegExp('('+escapeRe(raw)+')','gi'),
+      '<mark class="highlight">$1</mark>'
+    );
+    /* Fallback: resaltar con versión normalizada sobre texto normalizado si no hubo match directo */
+    if(snipHl===r.snippet && !artNumMatch){
+      snipHl=highlightNormalized(r.snippet,qNorm);
+    }
+    html+='<div class="result-card" onclick="goToSection(\''+r.id+'\')">'+
+      '<div class="result-art-num">'+r.num+'</div>'+
+      '<div class="result-text">'+snipHl+'</div></div>';
   });
-  if(found.length>50)html+='<p style="text-align:center;color:#999;font-size:0.8rem;margin-top:10px">Mostrando los primeros 50 de '+found.length+' resultados</p>';
+
+  if(found.length>50){
+    html+='<p style="text-align:center;color:#999;font-size:0.8rem;margin-top:10px">'+
+      'Mostrando los primeros 50 de '+found.length+' resultados</p>';
+  }
   results.innerHTML=html;
+}
+
+/* Resalta coincidencias normalizadas dentro de texto original preservando acentos */
+function highlightNormalized(orig,qNorm){
+  var origNorm=normalize(orig);
+  var reEsc=escapeRe(qNorm);
+  var re=new RegExp(reEsc,'g');
+  var result='';var last=0;var m;
+  while((m=re.exec(origNorm))!==null){
+    result+=escapeHtml(orig.slice(last,m.index));
+    result+='<mark class="highlight">'+escapeHtml(orig.slice(m.index,m.index+m[0].length))+'</mark>';
+    last=m.index+m[0].length;
+  }
+  result+=escapeHtml(orig.slice(last));
+  return result;
+}
+function escapeHtml(s){
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 }
 
 function toggleTituloIdx(btn,bodyId){
