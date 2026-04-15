@@ -98,7 +98,7 @@
     .topbar-search input {
       background: none; border: none; color: #fff;
       padding: 6px 10px; font-size: 0.85rem;
-      width: 160px; outline: none;
+      width: 190px; outline: none;
       font-family: 'Segoe UI', Arial, sans-serif;
     }
     .topbar-search input::placeholder { color: rgba(255,255,255,0.55); }
@@ -672,22 +672,32 @@
     <nav class="breadcrumb" id="breadcrumb">
       <a href="#" onclick="showPage('inicio')">🏠 Inicio</a>
     </nav>
-    <div class="topbar-search">
-      <input type="text" id="topbarSearch" placeholder="Buscar término…" oninput="globalSearch(this.value)">
-      <button onclick="prevSearchResult()" title="Anterior">◀</button>
-      <button onclick="nextSearchResult()" title="Siguiente">▶</button>
-      <button onclick="clearSearch()" title="Limpiar">✕</button>
+    <div class="topbar-search" id="topbarSearchWrap">
+      <input type="text" id="topbarSearch"
+        placeholder="Buscar texto o Art. N°…"
+        autocomplete="off"
+        onkeydown="handleSearchKey(event)"
+        oninput="handleSearchInput(this.value)">
+      <button onclick="smartSearch(document.getElementById('topbarSearch').value)" title="Buscar">🔍</button>
+      <button onclick="prevSearchResult()" id="btnPrev" title="Anterior" style="display:none">◀</button>
+      <button onclick="nextSearchResult()" id="btnNext" title="Siguiente" style="display:none">▶</button>
+      <button onclick="clearSearch()" id="btnClear" title="Limpiar" style="display:none">✕</button>
     </div>
-    <div class="goto-art">
-      <input type="number" id="gotoInput" placeholder="Art. N°" min="1" max="96"
-        onkeydown="if(event.key==='Enter') gotoArt()">
-      <button onclick="gotoArt()">Ir</button>
-    </div>
+    <div id="searchSuggestion"
+      style="display:none;position:fixed;top:var(--topbar-h);right:0;
+             background:#1A3A2A;color:#fff;padding:5px 14px;
+             font-size:0.78rem;font-family:'Segoe UI',Arial,sans-serif;
+             border-radius:0 0 0 8px;z-index:199;cursor:pointer;
+             box-shadow:0 2px 8px rgba(0,0,0,0.3);"
+      onclick="executeSuggestion()"></div>
   </div>
 
   <!-- BARRA RESULTADOS BÚSQUEDA -->
   <div class="search-results-bar" id="searchResultsBar">
     <span id="searchResultsText">0 resultados</span>
+    <span id="searchResultsCtx"
+      style="flex:1;font-weight:400;font-size:0.78rem;color:#666;
+             overflow:hidden;white-space:nowrap;text-overflow:ellipsis;"></span>
     <button onclick="prevSearchResult()">◀ Anterior</button>
     <button onclick="nextSearchResult()">Siguiente ▶</button>
     <button onclick="clearSearch()">✕ Limpiar</button>
@@ -1971,34 +1981,39 @@ function toggleArt(btn) {
    NAVEGACIÓN A ARTÍCULO POR NÚMERO
    ============================================================ */
 function navToArt(artNum) {
-  const secNum = artSecMap[artNum] || 1;
+  const secNum   = artSecMap[artNum] || 1;
+  const targetPg = 'sec' + secNum;
 
-  if (currentPage !== 'sec' + secNum) {
-    showSec(secNum);
-  }
-
-  requestAnimationFrame(() => {
+  const doScroll = () => {
     const artEl = document.getElementById('art-' + artNum);
-    if (artEl) {
-      const topOffset = document.querySelector('.topbar')?.offsetHeight || 56;
-      const pos = artEl.getBoundingClientRect().top + window.scrollY - topOffset - 12;
-      window.scrollTo({ top: pos, behavior: 'smooth' });
+    if (!artEl) return;
+    const barH   = document.getElementById('searchResultsBar')?.classList.contains('visible') ? 38 : 0;
+    const topOff = (document.querySelector('.topbar')?.offsetHeight || 56) + barH;
+    const pos    = artEl.getBoundingClientRect().top + window.scrollY - topOff - 16;
+    window.scrollTo({ top: pos, behavior: 'smooth' });
 
-      const btn  = artEl.querySelector('.art-header');
-      const body = artEl.querySelector('.art-body');
-      if (btn && body && !body.classList.contains('open')) {
-        body.classList.add('open');
-        btn.classList.add('open');
-      }
-      artEl.style.transition = 'box-shadow 0.3s ease';
-      artEl.style.boxShadow  = '0 0 0 3px var(--secondary)';
-      setTimeout(() => { artEl.style.boxShadow = ''; }, 2000);
+    const btn  = artEl.querySelector('.art-header');
+    const body = artEl.querySelector('.art-body');
+    if (btn && body && !body.classList.contains('open')) {
+      body.classList.add('open');
+      btn.classList.add('open');
     }
-  });
+    artEl.style.transition = 'box-shadow 0.3s ease';
+    artEl.style.boxShadow  = '0 0 0 3px var(--secondary)';
+    setTimeout(() => { artEl.style.boxShadow = ''; }, 2000);
+    currentArtNum = artNum;
+  };
+
+  if (currentPage !== targetPg) {
+    showSec(secNum);
+    setTimeout(doScroll, 140);   // wait for page to render
+  } else {
+    doScroll();
+  }
 }
 
 function gotoArt() {
-  const val = parseInt(document.getElementById('gotoInput').value);
+  const val = parseInt(document.getElementById('gotoInput')?.value);
   if (val >= 1 && val <= 96) navToArt(val);
 }
 
@@ -2043,22 +2058,22 @@ function scrollToCurrentArt() {
 }
 
 function openMobileSearch() {
-  const bar = document.getElementById('topbarSearch');
-  if (bar) {
-    bar.closest('.topbar-search')?.style?.setProperty('display', 'flex');
-    bar.focus();
-  } else {
-    const q = prompt('Buscar en la Ley 32 de 1927:');
-    if (q) globalSearch(q);
-  }
+  const wrap = document.getElementById('topbarSearchWrap');
+  if (wrap) wrap.style.display = 'flex';
+  const inp = document.getElementById('topbarSearch');
+  if (inp) inp.focus();
 }
 
 function focusSearch() {
-  document.getElementById('topbarSearch')?.focus();
+  const wrap = document.getElementById('topbarSearchWrap');
+  if (wrap) wrap.style.removeProperty('display');
+  const inp = document.getElementById('topbarSearch');
+  if (inp) inp.focus();
 }
 
 function focusGoto() {
-  document.getElementById('gotoInput')?.focus();
+  const inp = document.getElementById('topbarSearch');
+  if (inp) { inp.focus(); inp.placeholder = 'Número de artículo…'; }
 }
 
 /* ============================================================
@@ -2085,8 +2100,98 @@ function copyArtCitation() {
 }
 
 /* ============================================================
-   BÚSQUEDA GLOBAL
+   BÚSQUEDA GLOBAL UNIFICADA
    ============================================================ */
+let _pendingSuggestionArt = null;
+let _searchDebounce       = null;
+
+function handleSearchKey(e) {
+  if (e.key === 'Enter') {
+    clearTimeout(_searchDebounce);
+    smartSearch(e.target.value);
+  } else if (e.key === 'Escape') {
+    clearSearch();
+  } else if (e.key === 'ArrowDown' && searchResults.length) {
+    nextSearchResult();
+  } else if (e.key === 'ArrowUp' && searchResults.length) {
+    prevSearchResult();
+  }
+}
+
+function handleSearchInput(val) {
+  const trimmed = val.trim();
+  _showClearBtn(!!trimmed);
+
+  // Sugerencia inmediata para número puro
+  const sug = document.getElementById('searchSuggestion');
+  if (/^\d+$/.test(trimmed)) {
+    const num = parseInt(trimmed, 10);
+    if (num >= 1 && num <= 96) {
+      const secNum  = artSecMap[num] || 1;
+      const secNom  = secNames[secNum] || '';
+      sug.textContent = '↩ Ir al Artículo ' + num + ' — ' + secNom;
+      sug.style.display = 'block';
+      _pendingSuggestionArt = num;
+      return;
+    }
+  }
+  sug.style.display = 'none';
+  _pendingSuggestionArt = null;
+
+  // Búsqueda con debounce (350 ms) para evitar buscar en cada tecla
+  clearTimeout(_searchDebounce);
+  if (trimmed.length >= 2) {
+    _searchDebounce = setTimeout(() => globalSearch(trimmed), 350);
+  } else if (!trimmed) {
+    clearHighlights();
+    document.getElementById('searchResultsBar')?.classList.remove('visible');
+    _showNavBtns(false);
+  }
+}
+
+function executeSuggestion() {
+  if (_pendingSuggestionArt) {
+    const n = _pendingSuggestionArt;
+    clearSearch();
+    navToArt(n);
+  }
+}
+
+/**
+ * Entrada unificada: número → navega, texto → búsqueda global
+ */
+function smartSearch(query) {
+  const q = query.trim();
+  if (!q) return;
+
+  // Número puro
+  if (/^\d+$/.test(q)) {
+    const num = parseInt(q, 10);
+    if (num >= 1 && num <= 96) {
+      document.getElementById('topbarSearch').value = '';
+      document.getElementById('searchSuggestion').style.display = 'none';
+      _showClearBtn(false);
+      _pendingSuggestionArt = null;
+      navToArt(num);
+      return;
+    }
+  }
+
+  // "art 15", "art. 15", "artículo 15"
+  const artM = q.match(/^art[í.]?\s*\.?\s*(\d+)$/i);
+  if (artM) {
+    const num = parseInt(artM[1], 10);
+    if (num >= 1 && num <= 96) {
+      document.getElementById('topbarSearch').value = '';
+      _showClearBtn(false);
+      navToArt(num);
+      return;
+    }
+  }
+
+  globalSearch(q);
+}
+
 function globalSearch(query) {
   clearHighlights();
   searchResults = [];
@@ -2094,89 +2199,177 @@ function globalSearch(query) {
   searchQuery   = query.trim();
 
   const bar = document.getElementById('searchResultsBar');
-
   if (!searchQuery || searchQuery.length < 2) {
     bar?.classList.remove('visible');
+    _showNavBtns(false);
     return;
   }
 
   const regex = new RegExp(escapeRegex(searchQuery), 'gi');
+  let firstSecNum = null;
 
-  document.querySelectorAll('.art-text').forEach(el => {
-    if (regex.test(el.textContent)) {
-      const artBody = el.closest('.art-body');
-      const artHdr  = artBody?.previousElementSibling;
-      if (artBody && !artBody.classList.contains('open')) {
-        artBody.classList.add('open');
-        artHdr?.classList.add('open');
-      }
-      highlightText(el, regex);
-      searchResults.push(...el.querySelectorAll('.highlight'));
+  // Busca en TODOS los artículos (todas las secciones, no solo la activa)
+  document.querySelectorAll('.articulo').forEach(artEl => {
+    const textEl = artEl.querySelector('.art-text');
+    if (!textEl) return;
+
+    regex.lastIndex = 0;
+    if (!regex.test(textEl.textContent)) return;
+
+    // Abrir acordeón
+    const artBody = artEl.querySelector('.art-body');
+    const artHdr  = artEl.querySelector('.art-header');
+    if (artBody && !artBody.classList.contains('open')) {
+      artBody.classList.add('open');
+      if (artHdr) artHdr.classList.add('open');
     }
+
+    // Registrar sección del primer resultado
+    const artNum = parseInt(artEl.id.replace('art-', ''), 10);
+    const secN   = artSecMap[artNum];
+    if (firstSecNum === null) firstSecNum = secN;
+
+    regex.lastIndex = 0;
+    highlightNodes(textEl, regex);
+    artEl.querySelectorAll('mark.highlight').forEach(m => searchResults.push(m));
     regex.lastIndex = 0;
   });
 
   if (bar) {
-    bar.classList.toggle('visible', searchResults.length > 0);
+    const total = searchResults.length;
+    bar.classList.toggle('visible', total > 0);
     document.getElementById('searchResultsText').textContent =
-      searchResults.length + ' resultado' + (searchResults.length !== 1 ? 's' : '');
+      total > 0
+        ? total + ' resultado' + (total !== 1 ? 's' : '')
+        : 'Sin resultados';
+    document.getElementById('searchResultsCtx').textContent = '';
   }
 
+  _showNavBtns(searchResults.length > 1);
+
   if (searchResults.length > 0) {
-    searchIndex = 0;
-    goToSearchResult(0);
+    const targetPg = 'sec' + firstSecNum;
+    if (currentPage !== targetPg) {
+      showSec(firstSecNum);
+      setTimeout(() => { searchIndex = 0; _jumpToResult(0); }, 150);
+    } else {
+      searchIndex = 0; _jumpToResult(0);
+    }
   }
 }
 
-function highlightText(el, regex) {
-  el.innerHTML = el.innerHTML.replace(regex, match =>
-    '<mark class="highlight">' + match + '</mark>'
-  );
+/**
+ * highlightNodes — opera sobre nodos de texto para no romper HTML interno
+ */
+function highlightNodes(container, regex) {
+  const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT, null, false);
+  const textNodes = [];
+  let node;
+  while ((node = walker.nextNode())) textNodes.push(node);
+
+  textNodes.forEach(tn => {
+    regex.lastIndex = 0;
+    if (!regex.test(tn.nodeValue)) return;
+    regex.lastIndex = 0;
+
+    const frag = document.createDocumentFragment();
+    let last = 0, m;
+    while ((m = regex.exec(tn.nodeValue)) !== null) {
+      if (m.index > last) frag.appendChild(document.createTextNode(tn.nodeValue.slice(last, m.index)));
+      const mark = document.createElement('mark');
+      mark.className = 'highlight';
+      mark.textContent = m[0];
+      frag.appendChild(mark);
+      last = regex.lastIndex;
+    }
+    if (last < tn.nodeValue.length) frag.appendChild(document.createTextNode(tn.nodeValue.slice(last)));
+    tn.parentNode.replaceChild(frag, tn);
+  });
 }
 
 function clearHighlights() {
-  document.querySelectorAll('.highlight').forEach(m => {
-    const parent = m.parentNode;
-    parent.replaceChild(document.createTextNode(m.textContent), m);
-    parent.normalize();
+  document.querySelectorAll('mark.highlight').forEach(m => {
+    const p = m.parentNode;
+    if (p) { p.replaceChild(document.createTextNode(m.textContent), m); p.normalize(); }
   });
   searchResults = [];
   searchIndex   = -1;
 }
 
-function goToSearchResult(idx) {
-  document.querySelectorAll('.highlight').forEach(m => m.classList.remove('current'));
-  const el = document.querySelectorAll('.highlight')[idx];
+function _jumpToResult(idx) {
+  const all = document.querySelectorAll('mark.highlight');
+  all.forEach(m => m.classList.remove('current'));
+  const el = all[idx];
   if (!el) return;
   el.classList.add('current');
-  const topOffset = document.querySelector('.topbar')?.offsetHeight || 56;
-  const pos = el.getBoundingClientRect().top + window.scrollY - topOffset - 80;
-  window.scrollTo({ top: pos, behavior: 'smooth' });
+
+  // Navegar a la sección si es necesario
+  const artEl = el.closest('.articulo');
+  if (artEl) {
+    const artNum = parseInt(artEl.id.replace('art-', ''), 10);
+    const secNum = artSecMap[artNum];
+    const tgtPg  = 'sec' + secNum;
+    if (currentPage !== tgtPg) {
+      showSec(secNum);
+      setTimeout(() => _scrollToMark(el, idx, all.length), 150);
+      return;
+    }
+  }
+  _scrollToMark(el, idx, all.length);
 }
 
+function _scrollToMark(el, idx, total) {
+  const barH   = document.getElementById('searchResultsBar')?.classList.contains('visible') ? 38 : 0;
+  const topOff = (document.querySelector('.topbar')?.offsetHeight || 56) + barH + 8;
+  const pos    = el.getBoundingClientRect().top + window.scrollY - topOff;
+  window.scrollTo({ top: pos, behavior: 'smooth' });
+
+  // Actualizar contador y contexto
+  document.getElementById('searchResultsText').textContent =
+    (idx + 1) + ' / ' + total + ' resultado' + (total !== 1 ? 's' : '');
+
+  const artEl  = el.closest('.articulo');
+  const artNum = artEl ? artEl.querySelector('.art-num')?.textContent?.trim() : '';
+  document.getElementById('searchResultsCtx').textContent = artNum ? '→ ' + artNum : '';
+}
+
+function goToSearchResult(idx) { _jumpToResult(idx); }
+
 function nextSearchResult() {
-  const all = document.querySelectorAll('.highlight');
+  const all = document.querySelectorAll('mark.highlight');
   if (!all.length) return;
   searchIndex = (searchIndex + 1) % all.length;
-  goToSearchResult(searchIndex);
-  document.getElementById('searchResultsText').textContent =
-    (searchIndex + 1) + ' / ' + all.length + ' resultado' + (all.length !== 1 ? 's' : '');
+  _jumpToResult(searchIndex);
 }
 
 function prevSearchResult() {
-  const all = document.querySelectorAll('.highlight');
+  const all = document.querySelectorAll('mark.highlight');
   if (!all.length) return;
   searchIndex = (searchIndex - 1 + all.length) % all.length;
-  goToSearchResult(searchIndex);
-  document.getElementById('searchResultsText').textContent =
-    (searchIndex + 1) + ' / ' + all.length + ' resultado' + (all.length !== 1 ? 's' : '');
+  _jumpToResult(searchIndex);
 }
 
 function clearSearch() {
-  document.getElementById('topbarSearch').value = '';
+  clearTimeout(_searchDebounce);
+  const inp = document.getElementById('topbarSearch');
+  if (inp) inp.value = '';
   clearHighlights();
   document.getElementById('searchResultsBar')?.classList.remove('visible');
+  document.getElementById('searchSuggestion').style.display = 'none';
+  _showClearBtn(false);
+  _showNavBtns(false);
   searchQuery = '';
+  _pendingSuggestionArt = null;
+}
+
+function _showClearBtn(show) {
+  document.getElementById('btnClear').style.display = show ? 'inline-block' : 'none';
+}
+
+function _showNavBtns(show) {
+  ['btnPrev','btnNext'].forEach(id => {
+    document.getElementById(id).style.display = show ? 'inline-block' : 'none';
+  });
 }
 
 function escapeRegex(str) {
@@ -2205,8 +2398,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeSidebar();
-  if (e.key === 'Enter' && document.activeElement.id === 'gotoInput') gotoArt();
+  if (e.key === 'Escape') { closeSidebar(); clearSearch(); }
 });
 </script>
 
