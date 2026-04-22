@@ -13613,7 +13613,7 @@
   <button class="bottom-nav-item" onclick="showPage('inicio')" id="bn-inicio"><span class="bn-icon">🏠</span><span>Inicio</span></button>
   <button class="bottom-nav-item" onclick="showPage('indice')" id="bn-indice"><span class="bn-icon">📋</span><span>Índice</span></button>
   <button class="bottom-nav-item" onclick="openMobileSearch()" id="bn-buscar"><span class="bn-icon">🔍</span><span>Buscar</span></button>
-  <button class="bottom-nav-item" onclick="scrollToCurrentArt()" id="bn-posicion"><span class="bn-icon">📌</span><span>Mi posición</span></button>
+  <button class="bottom-nav-item" onclick="openMobileGoto()" id="bn-goto"><span class="bn-icon">#</span><span>Ir a Art.</span></button>
 </nav>
 
 <div class="art-info-sheet" id="artInfoSheet">
@@ -13642,6 +13642,7 @@ function updateBreadcrumbArt(pid,artNum){const bc=document.getElementById('bread
 function updateBottomNav(pid){document.querySelectorAll('.bottom-nav-item').forEach(b=>b.classList.remove('active'));if(pid==='inicio')document.getElementById('bn-inicio')?.classList.add('active');if(pid==='indice')document.getElementById('bn-indice')?.classList.add('active');}
 function scrollToCurrentArt(){if(currentArtNum)navToArt(currentArtNum);else window.scrollTo({top:0,behavior:'smooth'});}
 function openMobileSearch(){const b=document.getElementById('topbarSearch');if(b)b.focus();}
+function openMobileGoto(){var n=prompt('Ingrese número de artículo:');if(n){var inp=document.getElementById('gotoInput');if(inp)inp.value=n;navToArt(parseInt(n));}}
 function focusSearch(){const i=document.getElementById('topbarSearch');if(i)i.focus();}
 function focusGoto(){const i=document.getElementById('gotoInput');if(i)i.focus();}
 function openArtSheet(artNum,artTit,artId){document.getElementById('sheetArtNum').textContent=artNum;document.getElementById('sheetArtPath').textContent=pageNames[artPageMap[artId.replace('art-','')]||'']||'';document.getElementById('artInfoSheet').classList.add('open');}
